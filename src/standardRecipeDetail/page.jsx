@@ -1,22 +1,20 @@
 "use client";
-import React, { useState } from 'react';
-import MyEditor from '../../../public/wangedit/wangedit'
-import PagePop from './pagePop'
-import { Button, Form, Input, Popover} from 'antd';
+//import MyEditor from '../../../public/wangedit/wangedit'
+import PagePop from './pagePop.jsx'
+import { Button} from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import styles from "../page.module.css";
 import "./detail.scss"
-import Router from 'next/router'
 
 export default function Deatil() {
 
-    const handler = () =>{
-        console.log(Router)
-        Router.push({
-          pathname: '/addStandardRecipe',
-          query: { isAdd: 0 }
-        })
-    }
+    //const handler = () =>{
+    //    console.log(Router)
+    //    Router.push({
+    //      pathname: '/addStandardRecipe',
+    //      query: { isAdd: 0 }
+    //    })
+    //}
 
     return (<div className={styles.body}>
         <div className={styles.title}>标准方剂详情</div>
@@ -64,7 +62,7 @@ export default function Deatil() {
                     <h1>桂枝汤</h1>
                     <div className='contTime'><ClockCircleOutlined /><span>2024/06/26 17:55:08</span></div>
                 </div>
-                <Button  href='/addStandardRecipe?isAdd=0' >编辑</Button>
+                <Button href='/addStandardRecipe?isAdd=0' >编辑</Button>
                 {/* href='/addStandardRecipe?isAdd=0' onClick={()=>handler()}*/}
             </div>
             <div className={styles.line}></div>
@@ -74,7 +72,6 @@ export default function Deatil() {
                 <p>2. 注解</p>
                 <span>条辨15--热自发，</span>
             </div>
-            <MyEditor />
         </div>
     </div>)
 }

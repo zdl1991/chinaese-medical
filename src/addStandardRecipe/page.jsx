@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect,useRef } from 'react';
-import MyEditor from '../../../public/wangedit/wangedit'
+import { useState, useEffect,useRef } from 'react';
+//import MyEditor from '../../../public/wangedit/wangedit'
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import styles from "../page.module.css";
 import "./add.scss"
@@ -27,12 +27,12 @@ export default function Deatil() {
         getParams(['isAdd', 'name', 'describe', 'remark'])
     }, [window.location.search,])
 
-    const onReset = () => {
+    //const onReset = () => {
 
-    }
-    const onChange = (newFields) => {
+    //}
+    //const onChange = (newFields) => {
         
-    }
+    //}
 
 
     return (<div className={styles.body}>
@@ -59,10 +59,10 @@ export default function Deatil() {
                     initialValue={params.name || ''}
                 />
                 <ProForm.Item name={'describe'} label="标准方剂描述" initialValue={params.describe || ''}>
-                    <MyEditor cont={params.describe || ''} />
+                    {/*<MyEditor cont={params.describe || ''} />*/}
                 </ProForm.Item>
                 <ProForm.Item name={'remark'} label="标准方剂注解"initialValue={params.remark || ''}>
-                    <MyEditor cont={params.remark || ''} />
+                    {/*<MyEditor cont={params.remark || ''} />*/}
                 </ProForm.Item>
             </ProForm>
         </div>

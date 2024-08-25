@@ -1,45 +1,46 @@
 "use client";
-import React, { useState } from 'react';
-import { Button, Popover, Input, } from 'antd';
+
+import { Popover,  } from 'antd';
 import styles from "../page.module.css";
 import "./detail.scss"
-import Router from 'next/router'
+import { Link } from 'react-router-dom';
+//import Router from 'next/router'
 
 export default function PagePop() {
 
-    const handler = () => {
-        console.log(Router)
-        Router.push({
-            pathname: '/addStandardRecipe',
-            query: { isAdd: 0 }
-        })
-    }
+    //const handler = () => {
+    //    console.log(Router)
+    //    Router.push({
+    //        pathname: '/addStandardRecipe',
+    //        query: { isAdd: 0 }
+    //    })
+    //}
 
     const content = (
         <div className='popItemWrap'>
-            <a
-                href="/standardRecipe"
+            <Link
+                to="/standardRecipe"
                 className={styles.card}
                 rel="noopener noreferrer"
             >
                 标准方剂
-            </a>
+            </Link>
 
-            <a
-                href="/patient"
+            <Link
+                to="/patient"
                 className={styles.card}
                 rel="noopener noreferrer"
             >
                 患者
-            </a>
+            </Link>
 
-            <a
-                href="/recipe"
+            <Link
+                to="/recipe"
                 className={styles.card}
                 rel="noopener noreferrer"
             >
                 处方
-            </a>
+            </Link>
         </div>
     );
 
