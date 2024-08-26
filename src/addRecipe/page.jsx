@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect,useRef } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
 import { Button, Modal, Input, Radio, Space, message } from 'antd';
 import styles from "../page.module.css";

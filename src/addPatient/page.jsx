@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect,useRef } from 'react';
-import MyEditor from '../../../public/wangedit/wangedit'
+import { useState, useEffect,useRef } from 'react';
+//import MyEditor from '../../../public/wangedit/wangedit'
 import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
 import {message} from 'antd'
 import styles from "../page.module.css";
@@ -98,7 +98,7 @@ export default function Deatil() {
                     initialValue={params.name || ''}
                 />
                 <ProForm.Item name={'describe'} label="描述" initialValue={params.describe || ''}>
-                    <MyEditor cont={params.describe || ''} />
+
                 </ProForm.Item>
             </ProForm>
         </div>
