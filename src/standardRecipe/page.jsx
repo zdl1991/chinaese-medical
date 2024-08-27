@@ -87,8 +87,8 @@ export default function Home() {
   const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
   const fetchData = async (params) => {
-    const { current, pageSize, sorter } = params;
-    const response = await fetch(`/api/standards?current=${current}&pageSize=${pageSize}&sorter=${sorter}`);
+    const { current, pageSize } = params;
+      const response = await fetch(`/api/standards?current=${current}&pageSize=${pageSize}`);
     const data = await response.json();
     return {
       data: data,
