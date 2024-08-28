@@ -42,12 +42,20 @@ export default function Deatil() {
             <ProForm
                 form={form}
                 formRef={formRef}
-                //layout="inline"
                 onFinish={async (values) => {
-                    // await waitTime(2000);
-                    console.log(values);
-                    message.success('提交成功');
-                }}
+                   // console.log(values)
+                    try {
+                        await fetch('/api/standards/addStandardRecipe', {
+                            method: "POST",
+                            body: JSON.stringify(values),
+                            headers: { "Content-Type": "application/json" }
+                        })
+
+                    } catch (err) {
+                        console.error('Error fetching data:', error);
+                    }
+                }
+                }
                 initialValues={params}
             >
                 <ProFormText
