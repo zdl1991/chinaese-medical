@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect,useRef } from 'react';
-//import MyEditor from '../../../public/wangedit/wangedit'
 import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
 import {message} from 'antd'
 import styles from "../page.module.css";
