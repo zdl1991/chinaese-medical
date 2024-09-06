@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import styles from '../page.module.css';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
@@ -80,7 +81,7 @@ export default function Home() {
             success: true,
         };
     };
-    return (<main>
+    return (<main className={styles.main}>
 
         <ProTable
             request={fetchData}
