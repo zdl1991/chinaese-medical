@@ -44,20 +44,6 @@ export default function Home() {
             hideInSearch: true,
         },
         {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            valueType: 'dateRange',
-            hideInTable: true,
-            search: {
-                transform: (value) => {
-                    return {
-                        startTime: value[0],
-                        endTime: value[1],
-                    };
-                },
-            },
-        },
-        {
             title: '操作',
             dataIndex: 'age',
             hideInSearch: true,
@@ -74,14 +60,15 @@ export default function Home() {
     const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
     const fetchData = async (params) => {
-        const { current, pageSize } = params;
-        const response = await fetch(`/api/patient?current=${current}&pageSize=${pageSize}`, { method: "GET" });
+        const { current, pageSize, name="" } = params;
+        console.log(params)
+        const response = await fetch(`/api/patient?name=${name}&current=${current}&pageSize=${pageSize}`, { method: "GET" });
         if (response.ok) {
             const data = await response.json();
             console.log('data', data)
             return {
-                data: data,
-                total: data.length,
+                data: data.table,
+                total: data.total,
                 success: true,
             };
         } else {
@@ -109,7 +96,7 @@ export default function Home() {
                 <ProTable
                     request={fetchData}
                     params={params}
-                    //onParamsChange={setParams}
+                    onParamsChange={setParams}
                     columns={columns}
                     search={{
                         labelWidth: 'auto',
