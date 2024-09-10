@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect,useRef } from 'react';
-//import MyEditor from '../../../public/wangedit/wangedit'
 import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
-import {message} from 'antd'
+import {message, Input} from 'antd'
 import styles from "../page.module.css";
 import "./add.scss"
+const { TextArea } = Input;
 
 export default function Deatil() {
     const [params, setParams] = useState({})
@@ -20,7 +20,7 @@ export default function Deatil() {
         })
         console.log('result', result, 'field=====', field)
         setParams({ ...result })
-        formRef?.current.setFieldsValue(result)
+        formRef?.current.setFieldsValue(result)    
     }
 
     useEffect(() => {
@@ -98,7 +98,7 @@ export default function Deatil() {
                     initialValue={params.name || ''}
                 />
                 <ProForm.Item name={'describe'} label="描述" initialValue={params.describe || ''}>
-
+                    <TextArea rows={4}  name="diagnosis" placeholder="请输入描述"/>
                 </ProForm.Item>
             </ProForm>
         </div>

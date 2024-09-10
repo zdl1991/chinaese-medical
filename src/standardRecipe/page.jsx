@@ -88,7 +88,11 @@ export default function Home() {
 
   const fetchData = async (params) => {
     const { current, pageSize } = params;
-      const response = await fetch(`/api/standards?current=${current}&pageSize=${pageSize}`);
+    // const _url = `/api/standards?current=${current}&pageSize=${pageSize}`
+    let _url = `/api/standards`
+    !!params.name ? _url=`${_url}?name=${params.name}` : _url
+    
+    const response = await fetch(_url);
     const data = await response.json();
     return {
       data: data,
@@ -97,7 +101,7 @@ export default function Home() {
     };
   };
   
-  return (<main>
+  return (<main className={styles.main}>
     <div className={styles.title}>标准方剂列表</div>
     <div className={styles.line}></div>
     <ProTable
