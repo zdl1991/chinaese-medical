@@ -5,33 +5,14 @@ import styles from "../page.module.css";
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
-export default function Home() {
 
+export default function Home() {
 
   const columns = [
     {
       title: '标准方剂',
       dataIndex: 'name',
     },
-    // {
-    //   title: '篇章',
-    //   dataIndex: 'chapter',
-    //   hideInTable: true,
-    //   filters: true,
-    //   onFilter: true,
-    //   ellipsis: true,
-    //   valueType: 'select',
-    //   valueEnum: {
-    //     open: {
-    //       text: '太阳篇',
-    //       status: '1',
-    //     },
-    //     closed: {
-    //       text: '太阴篇',
-    //       status: '2',
-    //     },
-    //   }
-    // },
     {
       title: '方剂描述',
       dataIndex: 'describe',
@@ -41,11 +22,6 @@ export default function Home() {
       ellipsis: true,
       tooltip: '内容过长会自动收缩',
     },
-    // {
-    //   title: '篇章',
-    //   dataIndex: 'chapter',
-    //   hideInSearch: true,
-    // },
     {
       title: '注解',
       dataIndex: 'remark',

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect,useRef } from 'react';
+import React,{ useState, useEffect,useRef } from 'react';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import {message, Input} from 'antd'
 import styles from "../page.module.css";
@@ -8,6 +8,7 @@ const { TextArea } = Input;
 
 export default function Deatil() {
     const [params, setParams] = useState({})
+    const [cot,setCot]=useState(1)
     const [form] = ProForm.useForm();
 
     const formRef = useRef();
@@ -28,7 +29,8 @@ export default function Deatil() {
         getParams(['isAdd', 'name', 'standard_describe', 'remark'])
     }, [window.location.search,])
 
-    return (<div className={styles.body}>
+    return (
+    <div className={styles.body}>
         <div className={styles.title}>新增标准方剂</div>
         <div className={styles.line}></div>
         <div className='formWrap'>
@@ -66,6 +68,9 @@ export default function Deatil() {
                     <TextArea rows={4}  name="diagnosis" placeholder="请输入标准方剂注解"/>
                 </ProForm.Item>
             </ProForm>
+            
         </div>
-    </div>)
+    </div>
+    )
 }
+

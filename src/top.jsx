@@ -1,24 +1,46 @@
 "use client";
 import { Layout, Menu } from 'antd';
+import { useEffect, useState } from 'react';
 
-export default function Top() {
+export default function Top({router}) {
     const { Header } = Layout;
+    const [selectedKeys, setSelectedKeys] = useState('')
+
+    useEffect(() => {
+        let path = window.location.pathname.split('/')[1]
+        router.map(item=>{
+            if(item.include == path){
+                console.log('item.include.slice',item.include)
+                setSelectedKeys(item.include)
+            }
+        })
+    }, [  ])
+    
+    const onClick = (e) => {
+        console.log('e.key',e)
+        setSelectedKeys(e.key);
+        window.location.pathname = e.keyPath[0]
+    };
 
     return <Header style={{ display: 'flex', alignItems: 'center' }}>
         <Menu
             theme="dark"
             mode="horizontal"
-            defaultSelectedKeys={['2']}
+            defaultSelectedKeys={[selectedKeys]}
+            onClick={onClick}
             items={[
                 {
-                    label: (<a href='/standardRecipe'>±ê×¼·½¼Á</a>),
-                    key: 'standardRecipe'
+                    label: 'æ ‡å‡†æ–¹å‰‚',
+                    key: 'standardRecipe',
+                    keyPath:'/standardRecipe'
                 }, {
-                    label: (<a href='/patient'>»¼Õß</a>),
-                    key: 'patient'
+                    label: 'æ‚£è€…',
+                    key: 'patient',
+                    keyPath:'/patient'
                 }, {
-                    label: (<a href='/recipe'>´¦·½</a>),
-                    key: 'recipe'
+                    label: 'å¤„æ–¹',
+                    key: 'recipe',
+                    keyPath:'/recipe'
                 }
 
             ]}
