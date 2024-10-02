@@ -1,10 +1,9 @@
-    "use client";
+"use client";
 import { useState } from 'react';
 import styles from '../page.module.css';
 import { Button, Layout } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
-//import Top from '../top.jsx'
 
 export default function Home() {
 
@@ -17,44 +16,51 @@ export default function Home() {
 
         {
             title: '就诊号',
-            dataIndex: 'depict',
+            dataIndex: 'number',
             hideInSearch: true,
             minWidth: '200px'
         },
         {
             title: '性别',
-            dataIndex: 'chapter',
+            dataIndex: 'sex',
             hideInSearch: true,
+            render: (text) => {
+                return ["女", "男"][text]
+            }
+
         },
         {
             title: '年龄',
-            dataIndex: 'remark',
+            dataIndex: 'age',
             hideInSearch: true,
         },
         {
             title: '联系方式',
-            dataIndex: 'remark',
+            dataIndex: 'phone',
             hideInSearch: true,
         },
         {
             title: '创建时间',
-            dataIndex: 'createTime',
-            key: 'showTime',
-            valueType: 'date',
+            dataIndex: 'create_time',
+            valueType: 'dateTime',
             sorter: true,
+            hideInSearch: true,
+        }, {
+            title: '描述',
+            dataIndex: 'remark',
             hideInSearch: true,
         },
         {
             title: '操作',
             dataIndex: 'age',
             hideInSearch: true,
-            render: (parms,parm) => {
+            render: (parms, parm) => {
                 return (<div>
                     <Button type='link' href={`/patientDetail?id=${parm.id}`}>详情</Button>
                     <Button type='link' href={`/addPatient?id=${parm.id}`}>编辑</Button>
                     <Button type='link' href={`/addRecipe?id=${parm.id}`}>快速开方</Button>
                 </div>)
-}
+            }
         },
     ];
 
@@ -82,7 +88,6 @@ export default function Home() {
     return (
         <main className={styles.main}>
             <Layout>
-                
                 <Content style={{ padding: '0 48px' }}>
                     <ProTable
                         request={fetchData}

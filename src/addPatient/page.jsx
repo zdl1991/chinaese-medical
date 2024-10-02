@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
-import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
-import { Input } from 'antd'
+import { ProForm, ProFormText, ProFormRadio, ProFormDigit } from '@ant-design/pro-components';
+import { Input, message } from 'antd'
 import styles from "../page.module.css";
 import "./add.scss"
 const { TextArea } = Input;
@@ -31,24 +31,21 @@ export default function Deatil() {
         const id = new URLSearchParams(window.location.search).get("id")
         if (!!id) {
             getDetail(id)
+            formRef?.current.setFieldsValue({})
         }
     }, [])
-
-    const onReset = () => {
-
-    }
-    const onChange = (newFields) => {
-
-    }
+    
     const onFinish = async (values) => {
+        console.log(values)
         try {
-            await fetch('/api/users', {
+            await fetch('/api/patient/addPatient', {
                 method: "POST",
-                body: JSON.stringify(values)
+                body: JSON.stringify(values),
+                headers: { "Content-Type": "application/json" }
             })
 
         } catch (err) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching data:', err);
         }
     }
 
@@ -60,12 +57,10 @@ export default function Deatil() {
             <ProForm
                 form={form}
                 formRef={formRef}
-                //layout="inline"
                 onFinish={(values) => {
-                    // await waitTime(2000);
                     console.log(values);
                     onFinish(values)
-                    //message.success('提交成功');
+                    message.success('提交成功');
                 }}
                 initialValues={params}
             >
@@ -76,35 +71,37 @@ export default function Deatil() {
                     placeholder="请输入名称"
                     initialValue={params.name || ''}
                 />
-                <ProFormText
+                <ProFormDigit
                     width="md"
-                    name="age"
                     label="年龄"
-                    placeholder="请输入名称"
-                    initialValue={params.name || ''}
+                    name="age"
+                    min={1}
+                    max={100}
+                    fieldProps={{ precision: 0 }}
+                    initialValue={params.age || ''}
                 />
                 <ProFormRadio.Group
                     label="性别"
                     name="sex"
-                    initialValue="男"
-                    options={['男', '女']}
+                    initialValue={1}
+                    options={[{ label: '男', value: 1 }, { label: '女', value: 0 }]}
                 />
                 <ProFormText
                     width="md"
                     name="phone"
                     label="联系方式"
-                    placeholder="请输入名称"
-                    initialValue={params.name || ''}
+                    placeholder="请输入联系方式"
+                    initialValue={params.phone || ''}
                 />
                 <ProFormText
                     width="md"
                     name="address"
                     label="联系地址"
-                    placeholder="请输入名称"
-                    initialValue={params.name || ''}
+                    placeholder="请输入联系地址"
+                    initialValue={params.address || ''}
                 />
-                <ProForm.Item name={'describe'} label="描述" initialValue={params.describe || ''}>
-                    <TextArea rows={4} name="diagnosis" placeholder="请输入描述" />
+                <ProForm.Item name={'remark'} label="描述" initialValue={params.remark || ''}>
+                    <TextArea rows={4} name="remark" placeholder="请输入描述" />
                 </ProForm.Item>
             </ProForm>
         </div>
