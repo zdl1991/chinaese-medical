@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 
 import Page from './page.jsx'
-import StandardRecipe from './standardRecipe/page.jsx'
-import StandardRecipeDetail from './standardRecipeDetail/page.jsx'
-import AddStandardRecipe from './addStandardRecipe/page.jsx'
+import Standard from './standard/page.jsx'
+import StandardDetail from './standardDetail/page.jsx'
+import AddStandard from './addStandard/page.jsx'
 import Patient from './patient/page.jsx'
 import PatientDetail from './patientDetail/page.jsx'
 import AddPatient from './addPatient/page.jsx'
@@ -18,9 +18,9 @@ import './globals.css'
 
 const router = createBrowserRouter([
     { path: "/", element: <Page /> },
-    { path: "/standardRecipe", element: <StandardRecipe /> },
-    { path: "/standardRecipeDetail", element: <StandardRecipeDetail /> },
-    { path: "/addStandardRecipe", element: <AddStandardRecipe /> },
+    { path: "/standard", element: <Standard /> },
+    { path: "/standardDetail", element: <StandardDetail /> },
+    { path: "/addStandard", element: <AddStandard /> },
     { path: "/patient", element: <Patient /> },
     { path: "/patientDetail", element: <PatientDetail /> },
     { path: "/addPatient", element: <AddPatient /> },
@@ -30,9 +30,9 @@ const router = createBrowserRouter([
 ]);
 const topRouter = [
     { path: "/", include:'/'},
-    { path: "/standardRecipe", include:'standardRecipe'},
-    { path: "/standardRecipeDetail", include:'standardRecipe' },
-    { path: "/addStandardRecipe", include:'standardRecipe' },
+    { path: "/standard", include:'standard'},
+    { path: "/standardDetail", include:'standard' },
+    { path: "/addStandard", include:'standard' },
     { path: "/patient", include:'patient' },
     { path: "/patientDetail", include:'patient' },
     { path: "/addPatient", include:'patient' },
@@ -43,7 +43,8 @@ const topRouter = [
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <Top router={topRouter}/>
+        {window.location.pathname != '/' && <Top router={topRouter}/>}
+        
         <RouterProvider router={router} />
     </StrictMode>
 )

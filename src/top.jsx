@@ -1,6 +1,7 @@
 "use client";
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
+import { AntCloudOutlined } from '@ant-design/icons';
 
 export default function Top({router}) {
     const { Header } = Layout;
@@ -19,7 +20,7 @@ export default function Top({router}) {
     const onClick = (e) => {
         console.log('e.key',e)
         setSelectedKeys(e.key);
-        window.location.pathname = e.keyPath[0]
+        window.location.pathname = e?.keyPath[0]
     };
 
     return <Header style={{ display: 'flex', alignItems: 'center' }}>
@@ -30,17 +31,22 @@ export default function Top({router}) {
             onClick={onClick}
             items={[
                 {
+                    label: '首页',
+                    expandIcon: <AntCloudOutlined/>,
+                    key: 'home',
+                    keypath:'/'
+                }, {
                     label: '标准方剂',
-                    key: 'standardRecipe',
-                    keyPath:'/standardRecipe'
+                    key: 'standard',
+                    keypath:'/standard'
                 }, {
                     label: '患者',
                     key: 'patient',
-                    keyPath:'/patient'
+                    keypath:'/patient'
                 }, {
                     label: '处方',
                     key: 'recipe',
-                    keyPath:'/recipe'
+                    keypath:'/recipe'
                 }
 
             ]}

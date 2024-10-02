@@ -12,7 +12,7 @@ export default function Home() {
             </div>
             <div className={styles.grid}>
                 <Link
-                    to="/standardRecipe"
+                    to="/standard"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >

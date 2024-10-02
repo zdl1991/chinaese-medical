@@ -2,7 +2,7 @@
 import { useState } from 'react';
 // import type { FormProps } from 'antd';
 import styles from "../page.module.css";
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -15,7 +15,7 @@ export default function Home() {
     },
     {
       title: '方剂描述',
-      dataIndex: 'describe',
+      dataIndex: 'standard_describe',
       hideInSearch: true,
       minWidth: '200px',
       copyable: true,
@@ -51,12 +51,10 @@ export default function Home() {
     },
     {
       title: '操作',
-      dataIndex: 'age',
       hideInSearch: true,
-      render: () => (<div>
-        <Button type='link' href='/standardRecipeDetail'>详情</Button>
-        <Button type='link'>编辑</Button>
-        <Button type='link'>删除</Button>
+      render: (e, item) => (<div>
+        <Button type='link' href={`/standardDetail?id=${item.id}`}>详情</Button>
+        <Button type='link' href={`/addStandard?id=${item.id}`}>编辑</Button>
       </div>)
     },
   ];
@@ -64,15 +62,15 @@ export default function Home() {
 
   const fetchData = async (params) => {
     const { current, pageSize } = params;
-    // const _url = `/api/standards?current=${current}&pageSize=${pageSize}`
-    let _url = `/api/standards`
-    !!params.name ? _url=`${_url}?name=${params.name}` : _url
+    // const _url = `/api/standard?current=${current}&pageSize=${pageSize}`
+    let _url = `/api/standard/getList?current=${current}&pageSize=${pageSize}`
+    !!params.name ? _url=`${_url}&name=${params.name}` : _url
     
     const response = await fetch(_url);
     const data = await response.json();
     return {
-      data: data,
-      total: data.length,
+      data: data.table,
+      total: data.total,
       success: true,
     };
   };
@@ -88,11 +86,12 @@ export default function Home() {
       search={{
         labelWidth: 'auto',
       }}
+      rowKey={(record, index) => `${record.id}-${index}`}
       toolBarRender={() => [
         <Button
           key="button"
           icon={<PlusOutlined />}
-          href='/addStandardRecipe'
+          href='/addStandard'
           type="primary"
         >
           新建

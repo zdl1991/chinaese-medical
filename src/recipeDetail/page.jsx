@@ -20,7 +20,7 @@ export default function Deatil() {
         {/* <div className='detailWrap'>
             <div className={styles.grid}>
                 <a
-                    href="/standardRecipe"
+                    href="/standard"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
