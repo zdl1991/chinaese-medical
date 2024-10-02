@@ -1,47 +1,53 @@
 "use client";
-import { useState, useEffect,useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
-import {message, Input} from 'antd'
+import { Input } from 'antd'
 import styles from "../page.module.css";
 import "./add.scss"
 const { TextArea } = Input;
 
 export default function Deatil() {
+
     const [params, setParams] = useState({})
     const [form] = ProForm.useForm();
 
     const formRef = useRef();
-    const getParams = (names) => {
-        const params = new URLSearchParams(window.location.search)
-        const result = {}
-        let field = []
-        names.forEach((name) => {
-            result[name] = params.get(name)
-        })
-        console.log('result', result, 'field=====', field)
-        setParams({ ...result })
-        formRef?.current.setFieldsValue(result)    
+
+    const getDetail = async (id) => {
+
+        const response = await fetch(`/api/patient/getPatient?id=${id}`, { method: "GET" });
+        if (response.ok) {
+            const result = await response.json();
+            //console.log('data', data)
+            setParams({ ...result[0] })
+            formRef?.current.setFieldsValue(result[0])
+        } else {
+            throw new Error('Failed to fetch data');
+        }
     }
 
+    //初始化的时候判断是否是编辑模式
     useEffect(() => {
-        console.log('formRef?.current',formRef?.current)
-        getParams(['isAdd', 'name', 'describe', 'remark'])
-    }, [window.location.search,])
+        const id = new URLSearchParams(window.location.search).get("id")
+        if (!!id) {
+            getDetail(id)
+        }
+    }, [])
 
     const onReset = () => {
 
     }
     const onChange = (newFields) => {
-        
+
     }
-    const onFinish = async(values)=>{
-        try{
-            await fetch('/api/users',{
+    const onFinish = async (values) => {
+        try {
+            await fetch('/api/users', {
                 method: "POST",
                 body: JSON.stringify(values)
             })
 
-        }catch(err){
+        } catch (err) {
             console.error('Error fetching data:', error);
         }
     }
@@ -98,7 +104,7 @@ export default function Deatil() {
                     initialValue={params.name || ''}
                 />
                 <ProForm.Item name={'describe'} label="描述" initialValue={params.describe || ''}>
-                    <TextArea rows={4}  name="diagnosis" placeholder="请输入描述"/>
+                    <TextArea rows={4} name="diagnosis" placeholder="请输入描述" />
                 </ProForm.Item>
             </ProForm>
         </div>
