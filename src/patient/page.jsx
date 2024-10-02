@@ -1,9 +1,10 @@
 "use client";
 import { useState } from 'react';
 import styles from '../page.module.css';
-import { Button, Breadcrumb, Layout, Menu } from 'antd';
+import { Button, Breadcrumb, Layout } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
+import Top from '../top.jsx'
 
 export default function Home() {
 
@@ -55,17 +56,30 @@ export default function Home() {
         },
     ];
 
-    const { Header, Content } = Layout;
+    const { Content } = Layout;
 
     const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
+    const breadcrumbItems = [
+        {
+            label: '首页',
+            href: '/',
+            key: 'home',
+        },
+        {
+            label: '患者列表',
+            href: '/application',
+            key: 'application',
+        }
+    ]
+
     const fetchData = async (params) => {
-        const { current, pageSize, name="" } = params;
-        console.log(params)
+        const { current, pageSize, name = "" } = params;
+        //console.log(params)
         const response = await fetch(`/api/patient?name=${name}&current=${current}&pageSize=${pageSize}`, { method: "GET" });
         if (response.ok) {
             const data = await response.json();
-            console.log('data', data)
+            //console.log('data', data)
             return {
                 data: data.table,
                 total: data.total,
@@ -76,44 +90,37 @@ export default function Home() {
         }
     };
 
-    return (<main className={styles.main}>
-        <Layout>
-            <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <div className="demo-logo" />
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['2']}
-                    items={[]}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
-            </Header>
-            <Content style={{ padding: '0 48px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item href="/">首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>患者列表</Breadcrumb.Item>
-                </Breadcrumb>
-                <ProTable
-                    request={fetchData}
-                    params={params}
-                    onParamsChange={setParams}
-                    columns={columns}
-                    search={{
-                        labelWidth: 'auto',
-                    }}
-                    toolBarRender={() => [
-                        <Button
-                            key="button"
-                            icon={<PlusOutlined />}
-                            href='/addPatient'
-                            type="primary"
-                        >
-                            新建
-                        </Button>
-                    ]}
-                />
-            </Content>
-        </Layout>
-    </main>
+    return (
+        <main className={styles.main}>
+            <Layout>
+                <Top />
+                <Content style={{ padding: '0 48px' }}>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
+                        <Breadcrumb.Item href="/">首页</Breadcrumb.Item>
+                        <Breadcrumb.Item>患者列表</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Breadcrumb items={breadcrumbItems} />
+                    <ProTable
+                        request={fetchData}
+                        params={params}
+                        onParamsChange={setParams}
+                        columns={columns}
+                        search={{
+                            labelWidth: 'auto',
+                        }}
+                        toolBarRender={() => [
+                            <Button
+                                key="button"
+                                icon={<PlusOutlined />}
+                                href='/addPatient'
+                                type="primary"
+                            >
+                                新建
+                            </Button>
+                        ]}
+                    />
+                </Content>
+            </Layout>
+        </main>
     );
 }
