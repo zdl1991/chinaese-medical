@@ -5,54 +5,9 @@ import "./detail.scss"
 
 export default function Deatil() {
 
-    //const handler = () =>{
-    //    console.log(Router)
-    //    Router.push({
-    //      pathname: '/addPatient',
-    //      query: { isAdd: 0 }
-    //    })
-    //}
-
-
     return (<div className={styles.body}>
         <div className={styles.title}>处方详情</div>
         <div className={styles.line}></div>
-        {/* <div className='detailWrap'>
-            <div className={styles.grid}>
-                <a
-                    href="/standardRecipe"
-                    className={styles.card}
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        标准方剂 <span>-&gt;</span>
-                    </h2>
-                </a>
-
-                <a
-                    href="/patient"
-                    className={styles.card}
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        患者 <span>-&gt;</span>
-                    </h2>
-                </a>
-
-                <a
-                    href="/recipe"
-                    className={styles.card}
-                    rel="noopener noreferrer"
-                >
-                    <h2>
-                        处方 <span>-&gt;</span>
-                    </h2>
-
-                </a>
-            </div>
-
-        </div> */}
-
         <div className='detailContent' >
             <h1>患者信息</h1>
             <div className='contTop'>
