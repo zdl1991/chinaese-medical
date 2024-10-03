@@ -50,7 +50,7 @@ export default function Home() {
                 return (<div>
                     <Button type='link' href={`/patientDetail?id=${parm.id}`}>详情</Button>
                     <Button type='link' href={`/addPatient?id=${parm.id}`}>编辑</Button>
-                    <Button type='link' href={`/addRecipe?id=${parm.id}`}>快速开方</Button>
+                    <Button type='link' href={`/addRecipe?patientId=${parm.id}`}>快速开方</Button>
                 </div>)
             }
         },
