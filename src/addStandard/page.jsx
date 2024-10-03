@@ -25,7 +25,6 @@ export default function Deatil() {
     const getDetail = async(id) => {
         const response = await fetch(`/api/standard/getStandard?id=${id}`);
         const data = await response.json();
-        console.log('data',data)
         setDetail(data[0])
         formRef?.current.setFieldsValue(data[0])
     }
@@ -45,7 +44,6 @@ export default function Deatil() {
     }
 
     const updateStandard = async(values)=>{
-        console.log('values',values)
         try {
             await fetch('/api/standard/updateStandard', {
                 method: "PUT",

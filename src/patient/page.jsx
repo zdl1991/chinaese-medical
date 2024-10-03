@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
-import styles from '../page.module.css';
-import { Button, Layout } from 'antd';
+import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -57,8 +56,6 @@ export default function Home() {
         },
     ];
 
-    const { Content } = Layout;
-
     const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
     const fetchData = async (params) => {
@@ -79,30 +76,25 @@ export default function Home() {
     };
 
     return (
-        <main className={styles.main}>
-            <Layout>
-                <Content style={{ padding: '0 48px' }}>
-                    <ProTable
-                        request={fetchData}
-                        params={params}
-                        onParamsChange={setParams}
-                        columns={columns}
-                        search={{
-                            labelWidth: 'auto',
-                        }}
-                        toolBarRender={() => [
-                            <Button
-                                key="button"
-                                icon={<PlusOutlined />}
-                                href='/addPatient'
-                                type="primary"
-                            >
-                                新建
-                            </Button>
-                        ]}
-                    />
-                </Content>
-            </Layout>
-        </main>
+        <ProTable
+            request={fetchData}
+            params={params}
+            onParamsChange={setParams}
+            columns={columns}
+            search={{
+                labelWidth: 'auto',
+            }}
+            rowKey={(record, index) => `${record.id}-${index}`}
+            toolBarRender={() => [
+                <Button
+                    key="button"
+                    icon={<PlusOutlined />}
+                    href='/addPatient'
+                    type="primary"
+                >
+                    新建
+                </Button>
+            ]}
+        />
     );
 }

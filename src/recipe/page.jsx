@@ -1,12 +1,12 @@
 "use client";
 import { useState } from 'react';
-import styles from '../page.module.css';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 
 
 export default function Home() {
+    const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
     const columns = [
         {
@@ -67,13 +67,11 @@ export default function Home() {
             </div>)
         },
     ];
-    const [params, setParams] = useState({ current: 1, pageSize: 20 });
-
 
     const fetchData = async (params) => {
         const { current, pageSize, sorter } = params;
         let _url = `/api/recipe/getList?current=${current}&pageSize=${pageSize}&sorter=${sorter}`
-        !!params.name ? _url=`${_url}&name=${params.name}` : _url
+        !!params.name ? _url = `${_url}&name=${params.name}` : _url
         const response = await fetch(_url);
         const data = await response.json();
         return {
@@ -82,8 +80,7 @@ export default function Home() {
             success: true,
         };
     };
-    return (<main className={styles.main}>
-
+    return (
         <ProTable
             request={fetchData}
             params={params}
@@ -92,6 +89,7 @@ export default function Home() {
             search={{
                 labelWidth: 'auto',
             }}
+            rowKey={(record, index) => `${record.id}-${index}`}
             toolBarRender={() => [
                 <Button
                     key="button"
@@ -104,6 +102,5 @@ export default function Home() {
             ]}
         />
 
-    </main>
     );
 }

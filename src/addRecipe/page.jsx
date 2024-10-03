@@ -7,7 +7,7 @@ import "./add.scss"
 import { geUrlParams } from '../utils.jsx'
 import PatientModal from './patientModal.jsx'
 import StandardtModal from './standardModal.jsx'
-const { Search, TextArea } = Input;
+const { TextArea } = Input;
 
 export default function Deatil() {
     const [detail, setDetail] = useState({})
@@ -23,7 +23,6 @@ export default function Deatil() {
     const getDetail = async (id) => {
         const response = await fetch(`/api/recipe/getRecipe?id=${id}`);
         const data = await response.json();
-        console.log('data', data)
         setDetail(data[0])
         formRef?.current.setFieldsValue(data[0])
     }
@@ -37,7 +36,6 @@ export default function Deatil() {
     }, [window.location.search])
 
     const changeFormValue = (patient) => {
-        // console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
         formRef?.current.setFieldValue('patient_id', patient.id)
         formRef?.current.setFieldValue('patient_name', patient.name)
         formRef?.current.setFieldValue('patient_age', patient.age)
@@ -46,14 +44,12 @@ export default function Deatil() {
         setPatient({ ...patient, patient_id: patient.id, patient_address: patient.address })
     }
     const changeFormRecipe = (standard) => {
-        // console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
         let R = formRef?.current.getFieldValue('recipe_content') || ''
         formRef?.current.setFieldValue('recipe_content', `${R}${standard.standard_describe}`)
         setStandard({ ...standard, standard_id: standard.id })
     }
 
     const addRecipe = async (values) => {
-        console.log('values', values, detail)
         if (!patient.patient_id) {
             message.warning('请选择患者')
             return
@@ -64,7 +60,6 @@ export default function Deatil() {
             patient_address: patient.patient_address, 
             standard_id: standard.standard_id,
         }
-        console.log('params',params)
         try {
             await fetch('/api/recipe/addRecipe', {
                 method: "POST",
@@ -79,7 +74,6 @@ export default function Deatil() {
     }
 
     const updateRecipe = async (values) => {
-        // console.log('values', values)
         try {
             await fetch('/api/recipe/updateRecipe', {
                 method: "PUT",
@@ -158,7 +152,7 @@ export default function Deatil() {
                 </ProForm.Item>
             </ProForm>
         </div>
-        <PatientModal open={isModalOpen} setIsModalOpen={setIsModalOpen} changeFormValue={changeFormValue} />
-        <StandardtModal open={isStandardOpen} setIsStandardOpen={setIsStandardOpen} changeFormRecipe={changeFormRecipe} />
+        <PatientModal open={isModalOpen} setIsOpen={setIsModalOpen} changeForm={changeFormValue} />
+        <StandardtModal open={isStandardOpen} setIsOpen={setIsStandardOpen} changeForm={changeFormRecipe} />
     </div>)
 }

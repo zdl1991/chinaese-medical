@@ -6,7 +6,7 @@ import img from '/dyjc.png';
 export default function Home() {
 
     return (
-        <main className={styles.main}>
+        <div>
             <div className={styles.center}>
                 <img src={img} alt="Logo" />
             </div>
@@ -33,6 +33,6 @@ export default function Home() {
                     处方 -&gt;
                 </Link>
             </div>
-        </main>
+        </div>
     );
 }

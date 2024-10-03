@@ -5,32 +5,30 @@ import { Button, Modal, Input, Radio, Space, message } from 'antd';
 import "./add.scss"
 const { Search, TextArea } = Input;
 
-export default function PatientModal({ open, setIsModalOpen, changeFormValue }) {
+export default function PatientModal({ open, setIsOpen, changeForm }) {
     const [patientList, setPatientList] = useState([]);
     const [patient, setPatient] = useState({});
 
+    useEffect(()=>{
+        if(!!open)fetchList('')
+    }, [open])
+
     const handleOk = () => {
-        changeFormValue(patient)
+        changeForm(patient)
         handleCancel()
     }
     const handleCancel = () => {
-        setIsModalOpen(false);
+        setIsOpen(false);
         setPatient({})
     }
 
-    const onSearch = (v) => {
-        fetchPatientList(v)
-    }
-
-    const fetchPatientList = async (name) => {
-        console.log('name', name)
+    const fetchList = async (name) => {
         try {
             const response = await fetch(`/api/patient/getList?name=${name || ''}`, { method: "GET" });
             if (response.ok) {
                 const data = await response.json();
-                console.log('data', data)
                 setPatientList(data.table)
-                setIsModalOpen(true);
+                setIsOpen(true);
             } else {
                 throw new Error('Failed to fetch data');
             }
@@ -48,7 +46,7 @@ export default function PatientModal({ open, setIsModalOpen, changeFormValue }) 
             <Search
                 placeholder="搜索患者"
                 allowClear
-                onSearch={onSearch}
+                onSearch={ (v)=>fetchList(v)}
                 style={{ width: 200 }}
             />
             <div className='radioWrap'>
@@ -56,7 +54,7 @@ export default function PatientModal({ open, setIsModalOpen, changeFormValue }) 
                     <Space direction="vertical">
                         {
                             patientList.map(item => (
-                                <Radio value={item} key={item.id}>{item.name} {!!item.age ? `${item.age}岁` : ''} {item.sex == 1 ? '女' : '男'}</Radio>
+                                <Radio value={item} key={item.id}>{item.name} {!!item.age ? `${item.age}岁` : ''} {item.sex == 1 ? '男' : '女'}</Radio>
                             ))
                         }
                     </Space>

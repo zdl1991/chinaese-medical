@@ -13,8 +13,10 @@ import Recipe from './recipe/page.jsx'
 import RecipeDetail from './recipeDetail/page.jsx'
 import AddRecipe from './addRecipe/page.jsx'
 import Top from './top.jsx'
+import { Layout } from 'antd';
 import './index.css'
 import './globals.css'
+import styles from "./page.module.css";
 
 const router = createBrowserRouter([
     { path: "/home", element: <Page /> },
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
     { path: "/addRecipe", element: <AddRecipe /> },
 ]);
 const topRouter = [
-    { path: "/home", include:'/home'},
+    { path: "/home", include:'home'},
     { path: "/standard", include:'standard'},
     { path: "/standardDetail", include:'standard' },
     { path: "/addStandard", include:'standard' },
@@ -40,11 +42,23 @@ const topRouter = [
     { path: "/recipeDetail", include:'recipe' },
     { path: "/addRecipe", include:'recipe' },
 ];
+const { Header, Content } = Layout;
+
+const homeStyle = {
+    background: window.location.pathname == '/home' ? '#fff': 'transparent',
+    padding: window.location.pathname == '/home' ? '0': '0 48px'
+}
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        {window.location.pathname != '/' && <Top router={topRouter}/>}
-        
-        <RouterProvider router={router} />
+        <main  className={styles.main}>
+            <Layout>
+                {/* {window.location.pathname != '/home' && <Top router={topRouter}/>} */}
+                <Top router={topRouter}/>
+            <Content style={homeStyle}>
+                <RouterProvider router={router} />
+            </Content>
+            </Layout>
+        </main>
     </StrictMode>
 )

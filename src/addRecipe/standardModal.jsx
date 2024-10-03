@@ -5,27 +5,30 @@ import { Button, Modal, Input, Radio, Space, message } from 'antd';
 import "./add.scss"
 const { Search, TextArea } = Input;
 
-export default function StandardtModal({ open, setIsStandardOpen, changeFormRecipe }) {
+export default function StandardtModal({ open, setIsOpen, changeForm }) {
     const [standardList, setStandardList] = useState([]);
     const [standard, setStandard] = useState({});
 
+    useEffect(()=>{
+        if(!!open)fetchList('')
+    }, [open])
+
     const handleStandardOk = () => {
-        changeFormRecipe(standard)
+        changeForm(standard)
         handleStandardCancel()
     }
     const handleStandardCancel = () => {
-        setIsStandardOpen(false);
+        setIsOpen(false);
         setStandard({})
     }
 
-    const fetchStandardList = async (name) => {
+    const fetchList = async (name) => {
         try {
             const response = await fetch(`/api/standard/getList?name=${name || ''}`, { method: "GET" });
             if (response.ok) {
                 const data = await response.json();
-                console.log('data', data)
                 setStandardList(data.table)
-                setIsStandardOpen(true);
+                setIsOpen(true);
             } else {
                 throw new Error('Failed to fetch data');
             }
@@ -43,7 +46,7 @@ export default function StandardtModal({ open, setIsStandardOpen, changeFormReci
             <Search
                 placeholder="搜索标准处方"
                 allowClear
-                onSearch={fetchStandardList}
+                onSearch={fetchList}
                 style={{
                     width: 200,
                 }}

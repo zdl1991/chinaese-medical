@@ -1,12 +1,11 @@
 "use client";
 import { useState } from 'react';
-// import type { FormProps } from 'antd';
-import styles from "../page.module.css";
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 
 export default function Home() {
+  const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
   const columns = [
     {
@@ -36,20 +35,6 @@ export default function Home() {
       hideInSearch: true,
     },
     {
-      title: '创建时间',
-      dataIndex: 'create_time',
-      valueType: 'dateRange',
-      hideInTable: true,
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
-      },
-    },
-    {
       title: '操作',
       hideInSearch: true,
       render: (e, item) => (<div>
@@ -58,14 +43,12 @@ export default function Home() {
       </div>)
     },
   ];
-  const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
   const fetchData = async (params) => {
     const { current, pageSize } = params;
-    // const _url = `/api/standard?current=${current}&pageSize=${pageSize}`
     let _url = `/api/standard/getList?current=${current}&pageSize=${pageSize}`
-    !!params.name ? _url=`${_url}&name=${params.name}` : _url
-    
+    !!params.name ? _url = `${_url}&name=${params.name}` : _url
+
     const response = await fetch(_url);
     const data = await response.json();
     return {
@@ -74,30 +57,27 @@ export default function Home() {
       success: true,
     };
   };
-  
-  return (<main className={styles.main}>
-    <div className={styles.title}>标准方剂列表</div>
-    <div className={styles.line}></div>
-    <ProTable
-      request={fetchData}
-      params={params}
-      onParamsChange={setParams}
-      columns={columns}
-      search={{
-        labelWidth: 'auto',
-      }}
-      rowKey={(record, index) => `${record.id}-${index}`}
-      toolBarRender={() => [
-        <Button
-          key="button"
-          icon={<PlusOutlined />}
-          href='/addStandard'
-          type="primary"
-        >
-          新建
-        </Button>
-      ]}
-    />
-  </main>
+
+  return (
+      <ProTable
+          request={fetchData}
+          params={params}
+          onParamsChange={setParams}
+          columns={columns}
+          search={{
+            labelWidth: 'auto',
+          }}
+          rowKey={(record, index) => `${record.id}-${index}`}
+          toolBarRender={() => [
+              <Button
+                  key="button"
+                  icon={<PlusOutlined />}
+                  href='/addStandard'
+                  type="primary"
+                >
+                  新建
+              </Button>
+          ]}
+      />
   );
 }

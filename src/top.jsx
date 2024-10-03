@@ -1,29 +1,34 @@
 "use client";
 import { Layout, Menu } from 'antd';
 import { useEffect, useState } from 'react';
-import { AntCloudOutlined } from '@ant-design/icons';
 
 export default function Top({router}) {
     const { Header } = Layout;
     const [selectedKeys, setSelectedKeys] = useState('')
+    const [styles, setStyles] = useState({})
 
     useEffect(() => {
         let path = window.location.pathname.split('/')[1]
-        router.map(item=>{
-            if(item.include == path){
-                console.log('item.include.slice',item.include)
-                setSelectedKeys(item.include)
-            }
-        })
-    }, [  ])
+        // router.map(item=>{
+        //     if(item.include == path){
+        //         console.log('item.include.slice',item.include)
+        //         setSelectedKeys(item.include)
+                if(path == 'home'){
+                    setStyles({display: 'none'})
+                }else{
+                    setStyles({display: 'flex'})
+                }
+            // }
+        // })
+    }, [window.location.pathname])
     
     const onClick = (e) => {
-        console.log('e.key',e)
+        // console.log('e.key',e)
         setSelectedKeys(e.key);
         window.location.pathname = e?.keyPath[0]== '/home' ? '/' : e?.keyPath[0]
     };
 
-    return <Header style={{ display: 'flex', alignItems: 'center' }}>
+    return <Header style={{ alignItems: 'center', ...styles }}>
         <Menu
             theme="dark"
             mode="horizontal"
@@ -32,7 +37,6 @@ export default function Top({router}) {
             items={[
                 {
                     label: '首页',
-                    expandIcon: <AntCloudOutlined/>,
                     key: 'home',
                     keypath:'/'
                 }, {
