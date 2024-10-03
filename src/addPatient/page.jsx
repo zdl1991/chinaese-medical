@@ -10,6 +10,8 @@ export default function Deatil() {
 
     const [params, setParams] = useState({})
     const [form] = ProForm.useForm();
+    const [isUpdate, setIsUpdate] = useState(false)
+    const [id, setId] = useState(null)
 
     const formRef = useRef();
 
@@ -28,39 +30,59 @@ export default function Deatil() {
 
     //初始化的时候判断是否是编辑模式
     useEffect(() => {
-        const id = new URLSearchParams(window.location.search).get("id")
-        if (!!id) {
-            getDetail(id)
-            formRef?.current.setFieldsValue({})
+        const _id = new URLSearchParams(window.location.search).get("id")
+        if (!!_id) {
+            setId(_id)
+            getDetail(_id)
+            //formRef?.current.setFieldsValue({})
+            setIsUpdate(true)
         }
     }, [])
-    
-    const onFinish = async (values) => {
-        console.log(values)
-        try {
-            await fetch('/api/patient/addPatient', {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: { "Content-Type": "application/json" }
-            })
 
-        } catch (err) {
-            console.error('Error fetching data:', err);
+    const onFinish = async (values) => {
+        //console.log(values)
+        if (isUpdate) {
+            try {
+                await fetch('/api/patient/updatePatient', {
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    headers: { "Content-Type": "application/json" }
+                })
+
+            } catch (err) {
+                console.error('Error fetching data:', err);
+            }
+        } else {
+            try {
+                await fetch('/api/patient/addPatient', {
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    headers: { "Content-Type": "application/json" }
+                })
+
+            } catch (err) {
+                console.error('Error fetching data:', err);
+            }
         }
     }
 
-
     return (<div className={styles.body}>
-        <div className={styles.title}>新增患者</div>
+        <div className={styles.title}>{isUpdate ? "编辑患者" : "新增患者"}</div>
         <div className={styles.line}></div>
         <div className='formWrap'>
             <ProForm
                 form={form}
                 formRef={formRef}
                 onFinish={(values) => {
-                    console.log(values);
-                    onFinish(values)
+                    if (isUpdate) {
+                        let par = { ...values, id }
+                        onFinish(par)
+                    } else {
+                        onFinish(values)
+                    }
                     message.success('提交成功');
+                    setTimeout(() => { location.href = "/patient" }, 1000)
+
                 }}
                 initialValues={params}
             >

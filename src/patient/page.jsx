@@ -13,13 +13,6 @@ export default function Home() {
             dataIndex: 'name',
             ellipsis: true,
         },
-
-        {
-            title: '就诊号',
-            dataIndex: 'number',
-            hideInSearch: true,
-            minWidth: '200px'
-        },
         {
             title: '性别',
             dataIndex: 'sex',
