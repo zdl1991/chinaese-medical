@@ -98,7 +98,7 @@ export default function Deatil() {
                     label="年龄"
                     name="age"
                     min={1}
-                    max={100}
+                    max={1000}
                     fieldProps={{ precision: 0 }}
                     initialValue={params.age || ''}
                 />
