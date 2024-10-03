@@ -11,27 +11,27 @@ export default function Home() {
                 <img src={img} alt="Logo" />
             </div>
             <div className={styles.grid}>
-                <Link
-                    to="/standard"
+                <a
+                    href="/standard"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     标准方剂-&gt;
-                </Link>
-                <Link
-                    to="/patient"
+                </a>
+                <a
+                    href="/patient"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     患者 -&gt;
-                </Link>
-                <Link
-                    to="/recipe"
+                </a>
+                <a
+                    href="/recipe"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     处方 -&gt;
-                </Link>
+                </a>
             </div>
         </div>
     );

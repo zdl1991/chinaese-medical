@@ -245,3 +245,24 @@
   background-color: #F0F2F5;
   min-height: 100vh;
 }
+
+.topNav{
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+  justify-content: center;
+  background-color: #001529;
+  color: #ffffff;
+  .topNavitem{
+    width: 65px;
+    text-align: center;
+    border-bottom: 2px solid #001529;
+  }
+  .topNavitem:hover{
+    cursor: pointer;
+    border-bottom: 2px solid #1677ff;
+  }
+  .active{
+    border-bottom: 2px solid #1677ff;
+  }
+}

@@ -18,6 +18,8 @@ import './index.css'
 import './globals.css'
 import styles from "./page.module.css";
 
+const { Content } = Layout;
+
 const router = createBrowserRouter([
     { path: "/home", element: <Page /> },
     { path: "/standard", element: <Standard /> },
@@ -30,19 +32,6 @@ const router = createBrowserRouter([
     { path: "/recipeDetail", element: <RecipeDetail /> },
     { path: "/addRecipe", element: <AddRecipe /> },
 ]);
-const topRouter = [
-    { path: "/home", include: 'home' },
-    { path: "/standard", include: 'standard' },
-    { path: "/standardDetail", include: 'standard' },
-    { path: "/addStandard", include: 'standard' },
-    { path: "/patient", include: 'patient' },
-    { path: "/patientDetail", include: 'patient' },
-    { path: "/addPatient", include: 'patient' },
-    { path: "/recipe", include: 'recipe' },
-    { path: "/recipeDetail", include: 'recipe' },
-    { path: "/addRecipe", include: 'recipe' },
-];
-const { Content } = Layout;
 
 const homeStyle = {
     background: window.location.pathname == '/home' ? '#fff' : 'transparent',
@@ -53,7 +42,7 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         <main className={styles.main}>
             <Layout>
-                <Top router={topRouter} />
+                <Top/>
 
                 <Content style={homeStyle}>
                     <RouterProvider router={router} />
