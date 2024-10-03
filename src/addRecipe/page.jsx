@@ -37,7 +37,7 @@ export default function Deatil() {
     }, [window.location.search])
 
     const changeFormValue = (patient) => {
-        console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
+        // console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
         formRef?.current.setFieldValue('patient_id', patient.id)
         formRef?.current.setFieldValue('patient_name', patient.name)
         formRef?.current.setFieldValue('patient_age', patient.age)
@@ -46,7 +46,7 @@ export default function Deatil() {
         setPatient({ ...patient, patient_id: patient.id, patient_address: patient.address })
     }
     const changeFormRecipe = (standard) => {
-        console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
+        // console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
         let R = formRef?.current.getFieldValue('recipe_content') || ''
         formRef?.current.setFieldValue('recipe_content', `${R}${standard.standard_describe}`)
         setStandard({ ...standard, standard_id: standard.id })
@@ -79,7 +79,7 @@ export default function Deatil() {
     }
 
     const updateRecipe = async (values) => {
-        console.log('values', values)
+        // console.log('values', values)
         try {
             await fetch('/api/recipe/updateRecipe', {
                 method: "PUT",
@@ -160,27 +160,5 @@ export default function Deatil() {
         </div>
         <PatientModal open={isModalOpen} setIsModalOpen={setIsModalOpen} changeFormValue={changeFormValue} />
         <StandardtModal open={isStandardOpen} setIsStandardOpen={setIsStandardOpen} changeFormRecipe={changeFormRecipe} />
-
-        {/* <Modal title="选择标准处方" open={isStandardOpen} onOk={handleStandardOk} onCancel={handleStandardCancel}>
-            <Search
-                placeholder="搜索标准处方"
-                allowClear
-                onSearch={onStandardSearch}
-                style={{
-                    width: 200,
-                }}
-            />
-            <div className='radioWrap'>
-                <Radio.Group onChange={onStandardRadioChange} value={standard}>
-                    <Space direction="vertical">
-                        {
-                            standardList.map(item=>(
-                                <Radio value={item} key={item.id}>{item.name} {item.describe}</Radio>
-                            ))
-                        }
-                    </Space>
-                </Radio.Group>
-            </div>
-        </Modal> */}
     </div>)
 }
