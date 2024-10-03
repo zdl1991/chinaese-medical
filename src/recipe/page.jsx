@@ -61,10 +61,9 @@ export default function Home() {
         {
             title: '操作',
             hideInSearch: true,
-            render: () => (<div>
-                <Button type='link' href='/recipeDetail'>详情</Button>
-                <Button type='link' href='/addRecipe'>编辑</Button>
-                <Button type='link'>删除</Button>
+            render: (e, item) => (<div>
+                <Button type='link' href={`/recipeDetail?id=${item.id}`}>详情</Button>
+                <Button type='link' href={`/addRecipe?id=${item.id}`}>编辑</Button>
             </div>)
         },
     ];
@@ -73,11 +72,13 @@ export default function Home() {
 
     const fetchData = async (params) => {
         const { current, pageSize, sorter } = params;
-        const response = await fetch(`/api/recipes?current=${current}&pageSize=${pageSize}&sorter=${sorter}`);
+        let _url = `/api/recipe/getList?current=${current}&pageSize=${pageSize}&sorter=${sorter}`
+        !!params.name ? _url=`${_url}&name=${params.name}` : _url
+        const response = await fetch(_url);
         const data = await response.json();
         return {
-            data: data,
-            total: data.length,
+            data: data.table,
+            total: data.total,
             success: true,
         };
     };

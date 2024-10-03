@@ -17,7 +17,7 @@ import './index.css'
 import './globals.css'
 
 const router = createBrowserRouter([
-    { path: "/", element: <Page /> },
+    { path: "/home", element: <Page /> },
     { path: "/standard", element: <Standard /> },
     { path: "/standardDetail", element: <StandardDetail /> },
     { path: "/addStandard", element: <AddStandard /> },
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     { path: "/addRecipe", element: <AddRecipe /> },
 ]);
 const topRouter = [
-    { path: "/", include:'/'},
+    { path: "/home", include:'/home'},
     { path: "/standard", include:'standard'},
     { path: "/standardDetail", include:'standard' },
     { path: "/addStandard", include:'standard' },

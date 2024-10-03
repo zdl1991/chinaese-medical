@@ -18,13 +18,12 @@ export default function Deatil() {
         let _id = geUrlParams(['id'])?.id || ''
         if(_id){
             setId(_id)
-            getDetail()
+            getDetail(id)
         }
     }, [window.location.search,])
 
-    const getDetail = async() => {
-        let _id = geUrlParams(['id']).id
-        const response = await fetch(`/api/standard/getStandard?id=${_id}`);
+    const getDetail = async(id) => {
+        const response = await fetch(`/api/standard/getStandard?id=${id}`);
         const data = await response.json();
         console.log('data',data)
         setDetail(data[0])

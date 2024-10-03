@@ -20,7 +20,7 @@ export default function Top({router}) {
     const onClick = (e) => {
         console.log('e.key',e)
         setSelectedKeys(e.key);
-        window.location.pathname = e?.keyPath[0]
+        window.location.pathname = e?.keyPath[0]== '/home' ? '/' : e?.keyPath[0]
     };
 
     return <Header style={{ display: 'flex', alignItems: 'center' }}>

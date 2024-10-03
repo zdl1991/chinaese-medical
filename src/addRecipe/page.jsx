@@ -1,104 +1,96 @@
 "use client";
-import { useState, useEffect,useRef } from 'react';
-import { ProForm, ProFormText, ProFormRadio } from '@ant-design/pro-components';
-import { Button, Modal, Input, Radio, Space, message } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { ProForm, ProFormText, ProFormRadio, ProFormDigit } from '@ant-design/pro-components';
+import { Button, Input, message } from 'antd';
 import styles from "../page.module.css";
 import "./add.scss"
+import { geUrlParams } from '../utils.jsx'
+import PatientModal from './patientModal.jsx'
+import StandardtModal from './standardModal.jsx'
 const { Search, TextArea } = Input;
 
 export default function Deatil() {
-    const [params, setParams] = useState({})
+    const [detail, setDetail] = useState({})
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isStandardOpen, setIsStandardOpen] = useState(false);
-    const [patientList, setPatientList] = useState([]);
-    const [standardList, setStandardList] = useState([]);
     const [standard, setStandard] = useState({});
     const [patient, setPatient] = useState({});
+    const [id, setId] = useState('')
     const [form] = ProForm.useForm();
 
     const formRef = useRef();
-    const getParams = (names) => {
-        const params = new URLSearchParams(window.location.search)
-        const result = {}
-        let field = []
-        names.forEach((name) => {
-            result[name] = params.get(name)
-        })
-        console.log('result', result, 'field=====', field)
-        setParams({ ...result })
-        formRef?.current.setFieldsValue(result)
+
+    const getDetail = async (id) => {
+        const response = await fetch(`/api/recipe/getRecipe?id=${id}`);
+        const data = await response.json();
+        console.log('data', data)
+        setDetail(data[0])
+        formRef?.current.setFieldsValue(data[0])
     }
 
     useEffect(() => {
-        console.log('formRef?.current',formRef?.current)
-        getParams(['isAdd', 'name', 'describe', 'remark'])
-    }, [window.location.search,])
-   
-
-    const handleOk = () => {
-        console.log('formRef?.current', formRef?.current)
-        formRef?.current.setFieldValue('name',patient.name)
-        formRef?.current.setFieldValue('age',patient.age)
-        formRef?.current.setFieldValue('sex',patient.sex)
-        handleCancel()
-    }
-    const handleCancel = () => {
-        setIsModalOpen(false);
-        setPatient({})
-    }
-    const onStandardSearch = (v) => {
-        fetchStandardList(v)
-    }
-
-    const handleStandardOk = () => {
-        let R = formRef?.current.getFieldValue('recipe') || ''
-        formRef?.current.setFieldValue('recipe',`${R}${standard.describe}`)
-        handleStandardCancel()
-    }
-    const handleStandardCancel = () => {
-        setIsStandardOpen(false);
-        setStandard({})
-    }
-    const onSearch = (v) => {
-        fetchPatientList(v)
-    }
-
-    const fetchPatientList = async (name) => {
-        try {
-          const response = await fetch(`/api/users?name=${name||''}`,{method: "GET"});
-          if (response.ok) {
-            const data = await response.json();
-            console.log('data',data)
-            setPatientList(data)
-            setIsModalOpen(true);
-          } else {
-            throw new Error('Failed to fetch data');
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
+        let _id = geUrlParams(['id'])?.id || ''
+        if (_id) {
+            setId(_id)
+            getDetail(id)
         }
-    };
-    const fetchStandardList = async (name) => {
-        try {
-          const response = await fetch(`/api/standards?name=${name||''}`,{method: "GET"});
-          if (response.ok) {
-            const data = await response.json();
-            console.log('data',data)
-            setStandardList(data)
-            setIsStandardOpen(true);
-          } else {
-            throw new Error('Failed to fetch data');
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-    };
+    }, [window.location.search])
 
-    const onRadioChange = (e) => {
-        setPatient(e.target.value)
+    const changeFormValue = (patient) => {
+        console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
+        formRef?.current.setFieldValue('patient_id', patient.id)
+        formRef?.current.setFieldValue('patient_name', patient.name)
+        formRef?.current.setFieldValue('patient_age', patient.age)
+        formRef?.current.setFieldValue('patient_sex', patient.sex)
+        formRef?.current.setFieldValue('patient_address', patient.address)
+        setPatient({ ...patient, patient_id: patient.id, patient_address: patient.address })
     }
-    const onStandardRadioChange = (e) => {
-        setStandard(e.target.value)
+    const changeFormRecipe = (standard) => {
+        console.log('formRef?.current', formRef?.current, formRef?.current.getFieldsValue())
+        let R = formRef?.current.getFieldValue('recipe_content') || ''
+        formRef?.current.setFieldValue('recipe_content', `${R}${standard.standard_describe}`)
+        setStandard({ ...standard, standard_id: standard.id })
+    }
+
+    const addRecipe = async (values) => {
+        console.log('values', values, detail)
+        if (!patient.patient_id) {
+            message.warning('请选择患者')
+            return
+        }
+        let params = {
+            ...values,
+            patient_id: patient.patient_id, 
+            patient_address: patient.patient_address, 
+            standard_id: standard.standard_id,
+        }
+        console.log('params',params)
+        try {
+            await fetch('/api/recipe/addRecipe', {
+                method: "POST",
+                body: JSON.stringify(params),
+                headers: { "Content-Type": "application/json" }
+            })
+            message.info('新增成功')
+            formRef?.current.resetFields()
+        } catch (err) {
+            console.error('Error fetching data:', err);
+        }
+    }
+
+    const updateRecipe = async (values) => {
+        console.log('values', values)
+        try {
+            await fetch('/api/recipe/updateRecipe', {
+                method: "PUT",
+                body: JSON.stringify({ ...values, id }),
+                headers: { "Content-Type": "application/json" }
+            })
+            message.info('编辑成功')
+            // history.go(-1)
+        } catch (err) {
+            console.error('Error fetching data:', err);
+        }
     }
 
     return (<div className={styles.body}>
@@ -108,87 +100,68 @@ export default function Deatil() {
             <ProForm
                 form={form}
                 formRef={formRef}
-                onFinish={async (values) => {
-                    // await waitTime(2000);
-                    console.log('valuesvalues======',values);
-                    message.success('提交成功');
-                }}
-                initialValues={params}
-                fixSiderbar
-                fixedHeader
+                onFinish={(values) => id ? updateRecipe(values) : addRecipe(values)}
+            //initialValues={detail}
+            //fixSiderbar
+            //fixedHeader
             >
                 <ProForm.Group title={'姓名'}>
                     <ProFormText
                         width="md"
-                        name="name"
+                        name="patient_name"
                         placeholder="请输入名称"
                         disabled={true}
-                        initialValue={params.name || ''}
+                        initialValue={detail.patient_name || ''}
                     />
-                    <Button onClick={fetchPatientList}>选择已有患者</Button>
-                    <Button href='/addPatient'>新增患者</Button>
+                    <Button onClick={() => setIsModalOpen(true)} disabled={!!id}>选择已有患者</Button>
+                    <Button href='/addPatient' disabled={!!id}>新增患者</Button>
                 </ProForm.Group>
                 <ProFormText
                     width="md"
-                    name="age"
+                    name="patient_age"
                     label="年龄"
                     disabled={true}
-                    placeholder="请输入名称"
-                    initialValue={params.age || ''}
+                    placeholder="请输入年龄"
+                    initialValue={detail.patient_age || ''}
                 />
                 <ProFormRadio.Group
                     label="性别"
-                    name="sex"
+                    name="patient_sex"
                     disabled={true}
-                    initialValue="params.sex"
-                    options={['男', '女']}
+                    initialValue={1}
+                    options={[{ label: '男', value: 1 }, { label: '女', value: 0 }]}
                 />
-                <ProForm.Item name={'narrative'} label="主诉" initialValue={params.narrative || ''}>
-                    <TextArea rows={4} name="narrative" placeholder="请输入主诉"/>
+                <ProForm.Item name={'narrative'} label="主诉" initialValue={detail.narrative || ''}>
+                    <TextArea rows={4} name="narrative" placeholder="请输入主诉" />
                 </ProForm.Item>
-                <ProForm.Item name={'diagnosis'} label="诊断"initialValue={params.diagnosis || ''}>
-                    <TextArea rows={4}  name="diagnosis" placeholder="请输入诊断"/>
+                <ProForm.Item name={'diagnosis'} label="诊断" initialValue={detail.diagnosis || ''}>
+                    <TextArea rows={4} name="diagnosis" placeholder="请输入诊断" />
                 </ProForm.Item>
-                <div  style={{display:'flex'}}>
-                    <ProForm.Item name={'recipe'} label="处方"initialValue={params.recipe || ''} style={{flex:1}}>
-                        <TextArea rows={4}  name="recipe" placeholder="请输入处方"/>
+                <div style={{ display: 'flex' }}>
+                    <ProForm.Item name={'recipe_content'} label="处方" initialValue={detail.recipe_content || ''} style={{ flex: 1 }}>
+                        <TextArea rows={4} name="recipe_content" placeholder="请输入处方" />
                     </ProForm.Item>
-                    <Button className="recipeBtn" onClick={fetchStandardList}>添加标准处方</Button>
+                    {!id && <Button className="recipeBtn" onClick={() => setIsStandardOpen(true)}>添加标准处方</Button>}
                 </div>
-                <ProFormText
+                <ProFormDigit
                     width="md"
                     name="num"
                     label="贴数"
-                    placeholder="请输入名称"
-                    initialValue={params.num || ''}
+                    placeholder="请输入贴数"
+                    initialValue={detail.num || ''}
+                    min={1}
+                    max={100}
+                    fieldProps={{ precision: 0 }}
                 />
-                <ProForm.Item name={'note'} label="注意事项"initialValue={params.note || ''}>
-                    <TextArea rows={4}  name="note" placeholder="请输入注意事项"/>
+                <ProForm.Item name={'note'} label="注意事项" initialValue={detail.note || ''}>
+                    <TextArea rows={4} name="note" placeholder="请输入注意事项" />
                 </ProForm.Item>
             </ProForm>
         </div>
-        <Modal title="选择患者" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <Search
-                placeholder="搜索患者"
-                allowClear
-                onSearch={onSearch}
-                style={{
-                    width: 200,
-                }}
-            />
-            <div className='radioWrap'>
-                <Radio.Group onChange={onRadioChange} value={patient}>
-                    <Space direction="vertical">
-                        {
-                            patientList.map(item=>(
-                                <Radio value={item} key={item.id}>{item.name} {!!item.age?`${item.age}岁`:''} {item.sex==1?'女':'男'}</Radio>
-                            ))
-                        }
-                    </Space>
-                </Radio.Group>
-            </div>
-        </Modal>
-        <Modal title="选择标准处方" open={isStandardOpen} onOk={handleStandardOk} onCancel={handleStandardCancel}>
+        <PatientModal open={isModalOpen} setIsModalOpen={setIsModalOpen} changeFormValue={changeFormValue} />
+        <StandardtModal open={isStandardOpen} setIsStandardOpen={setIsStandardOpen} changeFormRecipe={changeFormRecipe} />
+
+        {/* <Modal title="选择标准处方" open={isStandardOpen} onOk={handleStandardOk} onCancel={handleStandardCancel}>
             <Search
                 placeholder="搜索标准处方"
                 allowClear
@@ -208,6 +181,6 @@ export default function Deatil() {
                     </Space>
                 </Radio.Group>
             </div>
-        </Modal>
+        </Modal> */}
     </div>)
 }
