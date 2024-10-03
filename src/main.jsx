@@ -31,33 +31,33 @@ const router = createBrowserRouter([
     { path: "/addRecipe", element: <AddRecipe /> },
 ]);
 const topRouter = [
-    { path: "/home", include:'home'},
-    { path: "/standard", include:'standard'},
-    { path: "/standardDetail", include:'standard' },
-    { path: "/addStandard", include:'standard' },
-    { path: "/patient", include:'patient' },
-    { path: "/patientDetail", include:'patient' },
-    { path: "/addPatient", include:'patient' },
-    { path: "/recipe", include:'recipe' },
-    { path: "/recipeDetail", include:'recipe' },
-    { path: "/addRecipe", include:'recipe' },
+    { path: "/home", include: 'home' },
+    { path: "/standard", include: 'standard' },
+    { path: "/standardDetail", include: 'standard' },
+    { path: "/addStandard", include: 'standard' },
+    { path: "/patient", include: 'patient' },
+    { path: "/patientDetail", include: 'patient' },
+    { path: "/addPatient", include: 'patient' },
+    { path: "/recipe", include: 'recipe' },
+    { path: "/recipeDetail", include: 'recipe' },
+    { path: "/addRecipe", include: 'recipe' },
 ];
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const homeStyle = {
-    background: window.location.pathname == '/home' ? '#fff': 'transparent',
-    padding: window.location.pathname == '/home' ? '0': '0 48px'
+    background: window.location.pathname == '/home' ? '#fff' : 'transparent',
+    padding: window.location.pathname == '/home' ? '0' : '0 48px'
 }
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <main  className={styles.main}>
+        <main className={styles.main}>
             <Layout>
-                {/* {window.location.pathname != '/home' && <Top router={topRouter}/>} */}
-                <Top router={topRouter}/>
-            <Content style={homeStyle}>
-                <RouterProvider router={router} />
-            </Content>
+                <Top router={topRouter} />
+
+                <Content style={homeStyle}>
+                    <RouterProvider router={router} />
+                </Content>
             </Layout>
         </main>
     </StrictMode>
