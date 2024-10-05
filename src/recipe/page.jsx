@@ -40,22 +40,31 @@ export default function Home() {
             title: '主诉',
             dataIndex: 'narrative',
             hideInSearch: true,
-            minWidth: '200px'
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '诊断',
             dataIndex: 'diagnosis',
             hideInSearch: true,
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '处方',
-            dataIndex: 'recipe',
+            dataIndex: 'recipe_content',
             hideInSearch: true,
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '贴数（贴）',
             dataIndex: 'num',
             hideInSearch: true,
+            with: '20px'
         },
 
         {

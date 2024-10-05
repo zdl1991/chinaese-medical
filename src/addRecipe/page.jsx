@@ -31,7 +31,7 @@ export default function Deatil() {
         let _id = geUrlParams(['id'])?.id || ''
         if (_id) {
             setId(_id)
-            getDetail(id)
+            getDetail(_id)
         }
     }, [window.location.search])
 
@@ -68,6 +68,7 @@ export default function Deatil() {
             })
             message.info('新增成功')
             formRef?.current.resetFields()
+            setTimeout(() => {window.location.replace(document.referrer)}, 1000)
         } catch (err) {
             console.error('Error fetching data:', err);
         }
@@ -81,23 +82,20 @@ export default function Deatil() {
                 headers: { "Content-Type": "application/json" }
             })
             message.info('编辑成功')
-            // history.go(-1)
+            setTimeout(() => {window.location.replace(document.referrer)}, 1000)
         } catch (err) {
             console.error('Error fetching data:', err);
         }
     }
 
     return (<div className={styles.body}>
-        <div className={styles.title}>新增处方</div>
+        <div className={styles.title}>{!!id ? "编辑处方" : "新增处方"}</div>
         <div className={styles.line}></div>
         <div className='formWrap'>
             <ProForm
                 form={form}
                 formRef={formRef}
                 onFinish={(values) => id ? updateRecipe(values) : addRecipe(values)}
-            //initialValues={detail}
-            //fixSiderbar
-            //fixedHeader
             >
                 <ProForm.Group title={'姓名'}>
                     <ProFormText

@@ -25,6 +25,15 @@ export default function Home() {
       title: '注解',
       dataIndex: 'remark',
       hideInSearch: true,
+      ellipsis: true,
+      minWidth: '250px',
+      height: '40px',
+      tooltip: '内容过长会自动收缩',
+      render: (e, item)=> (
+        <div 
+          style={{height:'22px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', wordBreak: 'keep-all'}} 
+          dangerouslySetInnerHTML={{ __html: item.remark ? item.remark :'--' }}
+        />)
     },
     {
       title: '创建时间',

@@ -35,10 +35,11 @@ export default function Deatil() {
             </div>
             <div className={styles.line}></div>
             <div className='contBody'>
-                <p>1. 方剂描述</p>
-                <span>{detail.standard_describe}</span>
-                <p>2. 注解</p>
-                <span>{detail.remark?detail.remark:'无'}</span>
+                <p className='contBodyTitle'>1. 方剂描述</p>
+                <span className='contBodycont'>{detail.standard_describe}</span>
+                <p className='contBodyTitle'>2. 注解</p>
+                {/* <span>{detail.remark?detail.remark:'无'}</span> */}
+                <div dangerouslySetInnerHTML={{ __html: detail.remark?detail.remark:'无' }}/>
             </div>
         </div>
     </div>)

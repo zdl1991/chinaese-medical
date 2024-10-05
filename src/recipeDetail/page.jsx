@@ -38,7 +38,6 @@ export default function Deatil() {
             <h3>处方信息</h3>
             <div className='contBody'>
                 <div className='contBodyTop'>
-                    <div className='contItem'>处方号：<span>{detail.recipe_number}</span></div>
                     <div className='contItem'>开方日期：<span>{detail.create_time}</span></div>
                     <div className='contItem'>贴数：<span>{detail.num}</span></div>
                 </div>

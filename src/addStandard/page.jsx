@@ -3,6 +3,7 @@ import React,{ useState, useEffect,useRef } from 'react';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import {message, Input} from 'antd'
 import { geUrlParams } from '../utils.jsx'
+import MyEditor from '../../public/wangedit/wangedit'
 import styles from "../page.module.css";
 import "./add.scss"
 const { TextArea } = Input;
@@ -18,7 +19,7 @@ export default function Deatil() {
         let _id = geUrlParams(['id'])?.id || ''
         if(_id){
             setId(_id)
-            getDetail(id)
+            getDetail(_id)
         }
     }, [window.location.search,])
 
@@ -30,6 +31,7 @@ export default function Deatil() {
     }
 
     const addStandard = async(values)=>{
+        // console.log('values',values)
         try {
             await fetch('/api/standard/addStandard', {
                 method: "POST",
@@ -38,12 +40,16 @@ export default function Deatil() {
             })
             message.info('新增成功')
             formRef?.current.resetFields()
+            history.back(-1); 
+            // location.reload(); 
+            // setTimeout(() => {window.location.replace(document.referrer)}, 1000)
         } catch (err) {
             console.error('Error fetching data:', err);
         }
     }
 
     const updateStandard = async(values)=>{
+        // console.log('values',values)
         try {
             await fetch('/api/standard/updateStandard', {
                 method: "PUT",
@@ -51,7 +57,9 @@ export default function Deatil() {
                 headers: { "Content-Type": "application/json" }
             })
             message.info('编辑成功')
-            // history.go(-1)
+            history.back(-1); 
+            // location.reload();
+            // setTimeout(() => {window.location.replace(document.referrer)}, 1000)
         } catch (err) {
             console.error('Error fetching data:', err);
         }
@@ -59,7 +67,7 @@ export default function Deatil() {
 
     return (
     <div className={styles.body}>
-        <div className={styles.title}>新增标准方剂</div>
+        <div className={styles.title}>{!!id ? "编辑标准方剂" : "新增标准方剂"}</div>
         <div className={styles.line}></div>
         <div className='formWrap'>
             <ProForm
@@ -79,8 +87,11 @@ export default function Deatil() {
                 <ProForm.Item name={'standard_describe'} label="标准方剂描述" initialValue={detail.standard_describe || ''}>
                     <TextArea rows={4}  name="diagnosis" placeholder="请输入标准方剂描述"/>
                 </ProForm.Item>
-                <ProForm.Item name={'remark'} label="标准方剂注解"initialValue={detail.remark || ''}>
+                {/* <ProForm.Item name={'remark'} label="标准方剂注解"initialValue={detail.remark || ''}>
                     <TextArea rows={4}  name="diagnosis" placeholder="请输入标准方剂注解"/>
+                </ProForm.Item> */}
+                <ProForm.Item name={'remark'} label="标准方剂注解"initialValue={detail.remark || ''}>
+                    <MyEditor cont={detail.remark || ''} wangChange={(v)=>formRef?.current.setFieldValue('remark',v)}/>
                 </ProForm.Item>
             </ProForm>
             
