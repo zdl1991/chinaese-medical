@@ -26,22 +26,37 @@ export default function Deatil() {
         setDetail(data[0])
         formRef?.current.setFieldsValue(data[0])
     }
+    const getPatientDetail = async (id) => {
+
+        const response = await fetch(`/api/patient/getPatient?id=${id}`, { method: "GET" });
+        if (response.ok) {
+            const result = await response.json();
+            // setPatient(result[0])
+            changeFormValue(result[0])
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+    }
 
     useEffect(() => {
         let _id = geUrlParams(['id'])?.id || ''
+        let _patientId = geUrlParams(['patientId'])?.patientId || ''
         if (_id) {
             setId(_id)
             getDetail(_id)
         }
+        if(_patientId){
+            getPatientDetail(_patientId)
+        }
     }, [window.location.search])
 
-    const changeFormValue = (patient) => {
-        formRef?.current.setFieldValue('patient_id', patient.id)
-        formRef?.current.setFieldValue('patient_name', patient.name)
-        formRef?.current.setFieldValue('patient_age', patient.age)
-        formRef?.current.setFieldValue('patient_sex', patient.sex)
-        formRef?.current.setFieldValue('patient_address', patient.address)
-        setPatient({ ...patient, patient_id: patient.id, patient_address: patient.address })
+    const changeFormValue = (_patient) => {
+        formRef?.current.setFieldValue('patient_id', _patient.id)
+        formRef?.current.setFieldValue('patient_name', _patient.name)
+        formRef?.current.setFieldValue('patient_age', _patient.age)
+        formRef?.current.setFieldValue('patient_sex', _patient.sex)
+        formRef?.current.setFieldValue('patient_address', _patient.address)
+        setPatient({ ..._patient, patient_id: _patient.id, patient_address: _patient.address })
     }
     const changeFormRecipe = (standard) => {
         let R = formRef?.current.getFieldValue('recipe_content') || ''

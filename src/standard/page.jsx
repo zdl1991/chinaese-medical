@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
+import { unEscapeHtml } from '../utils.jsx'
 
 export default function Home() {
   const [params, setParams] = useState({ current: 1, pageSize: 20 });
@@ -29,10 +30,10 @@ export default function Home() {
       minWidth: '250px',
       height: '40px',
       tooltip: '内容过长会自动收缩',
-      render: (e, item)=> (
-        <div 
-          style={{height:'22px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', wordBreak: 'keep-all'}} 
-          dangerouslySetInnerHTML={{ __html: item.remark ? item.remark :'--' }}
+      render: (e, item) => (
+        <div
+          style={{ height: '22px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', wordBreak: 'keep-all' }}
+          dangerouslySetInnerHTML={{ __html: item.remark ? unEscapeHtml(item.remark) : '--' }}
         />)
     },
     {
@@ -68,25 +69,25 @@ export default function Home() {
   };
 
   return (
-      <ProTable
-          request={fetchData}
-          params={params}
-          onParamsChange={setParams}
-          columns={columns}
-          search={{
-            labelWidth: 'auto',
-          }}
-          rowKey={(record, index) => `${record.id}-${index}`}
-          toolBarRender={() => [
-              <Button
-                  key="button"
-                  icon={<PlusOutlined />}
-                  href='/addStandard'
-                  type="primary"
-                >
-                  新建
-              </Button>
-          ]}
-      />
+    <ProTable
+      request={fetchData}
+      params={params}
+      onParamsChange={setParams}
+      columns={columns}
+      search={{
+        labelWidth: 'auto',
+      }}
+      rowKey={(record, index) => `${record.id}-${index}`}
+      toolBarRender={() => [
+        <Button
+          key="button"
+          icon={<PlusOutlined />}
+          href='/addStandard'
+          type="primary"
+        >
+          新建
+        </Button>
+      ]}
+    />
   );
 }

@@ -1,8 +1,8 @@
 "use client";
-import React,{ useState, useEffect,useRef } from 'react';
-import { Button} from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
-import { geUrlParams } from '../utils.jsx'
+import { geUrlParams, unEscapeHtml } from '../utils.jsx'
 import styles from "../page.module.css";
 import "./detail.scss"
 
@@ -11,13 +11,13 @@ export default function Deatil() {
 
     useEffect(() => {
         getDetail()
-    }, [ window.location.search ])
+    }, [window.location.search])
 
-    const getDetail = async() => {
+    const getDetail = async () => {
         let _id = geUrlParams(['id']).id
         const response = await fetch(`/api/standard/getStandard?id=${_id}`);
         const data = await response.json();
-        setDetail(data[0]||{})
+        setDetail(data[0] || {})
     }
 
 
@@ -39,7 +39,7 @@ export default function Deatil() {
                 <span className='contBodycont'>{detail.standard_describe}</span>
                 <p className='contBodyTitle'>2. 注解</p>
                 {/* <span>{detail.remark?detail.remark:'无'}</span> */}
-                <div dangerouslySetInnerHTML={{ __html: detail.remark?detail.remark:'无' }}/>
+                <div dangerouslySetInnerHTML={{ __html: detail.remark ? unEscapeHtml(detail.remark) : '无' }} />
             </div>
         </div>
     </div>)
