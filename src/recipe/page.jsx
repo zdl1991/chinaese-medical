@@ -23,20 +23,6 @@ export default function Home() {
             hideInSearch: true,
         },
         {
-            title: '开方时间',
-            dataIndex: 'create_time',
-            valueType: 'dateRange',
-            hideInTable: true,
-            search: {
-                transform: (value) => {
-                    return {
-                        startTime: value[0],
-                        endTime: value[1],
-                    };
-                },
-            },
-        },
-        {
             title: '主诉',
             dataIndex: 'narrative',
             hideInSearch: true,
