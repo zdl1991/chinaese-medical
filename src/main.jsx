@@ -35,7 +35,7 @@ const router = createBrowserRouter([
 
 const homeStyle = {
     background: window.location.pathname == '/home' ? '#fff' : 'transparent',
-    //padding: window.location.pathname == '/home' ? '0' : '0 48px'
+    paddingBottom: window.location.pathname == '/home' ? '0' : '30px'
 }
 
 createRoot(document.getElementById('root')).render(

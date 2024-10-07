@@ -15,8 +15,12 @@ export default function Deatil() {
     const getDetail = async() => {
         let _id = geUrlParams(['id']).id
         const response = await fetch(`/api/recipe/getRecipe?id=${_id}`);
-        const data = await response.json();
-        setDetail(data[0]||{})
+        if (response.ok) {
+            const data = await response.json();
+            setDetail(data[0]||{})
+        } else {
+            throw new Error('Failed to fetch data');
+        }
     }
 
     return (<div className={styles.body}>

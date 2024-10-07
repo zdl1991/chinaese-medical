@@ -7,6 +7,7 @@ import "./add.scss"
 import { geUrlParams } from '../utils.jsx'
 import PatientModal from './patientModal.jsx'
 import StandardtModal from './standardModal.jsx'
+import { Logger } from 'sass';
 const { TextArea } = Input;
 
 export default function Deatil() {
@@ -16,6 +17,8 @@ export default function Deatil() {
     const [standard, setStandard] = useState({});
     const [patient, setPatient] = useState({});
     const [id, setId] = useState('')
+    const [patientId, setPatientId] = useState('')
+    const [preRecipe, setPreRecipe] = useState({})
     const [form] = ProForm.useForm();
 
     const formRef = useRef();
@@ -46,6 +49,7 @@ export default function Deatil() {
             getDetail(_id)
         }
         if(_patientId){
+            setPatientId(_patientId)
             getPatientDetail(_patientId)
         }
     }, [window.location.search])
@@ -63,7 +67,7 @@ export default function Deatil() {
         formRef?.current.setFieldValue('recipe_content', `${R}${standard.standard_describe}`)
         setStandard({ ...standard, standard_id: standard.id })
     }
-
+    // 新增处方
     const addRecipe = async (values) => {
         if (!patient.patient_id) {
             message.warning('请选择患者')
@@ -76,30 +80,51 @@ export default function Deatil() {
             standard_id: standard.standard_id,
         }
         try {
-            await fetch('/api/recipe/addRecipe', {
+            const response = await fetch('/api/recipe/addRecipe', {
                 method: "POST",
                 body: JSON.stringify(params),
                 headers: { "Content-Type": "application/json" }
             })
-            message.info('新增成功')
-            formRef?.current.resetFields()
-            setTimeout(() => {window.location.replace(document.referrer)}, 1000)
+            if (response.ok) {
+                message.info('新增成功')
+                formRef?.current.resetFields()
+                setTimeout(() => {window.location.replace(document.referrer)}, 1000)
+            } else {
+                throw new Error('Failed to fetch data');
+            }
         } catch (err) {
             console.error('Error fetching data:', err);
         }
     }
-
+    // 编辑处方
     const updateRecipe = async (values) => {
         try {
-            await fetch('/api/recipe/updateRecipe', {
+            const response = await fetch('/api/recipe/updateRecipe', {
                 method: "PUT",
                 body: JSON.stringify({ ...values, id }),
                 headers: { "Content-Type": "application/json" }
             })
-            message.info('编辑成功')
-            setTimeout(() => {window.location.replace(document.referrer)}, 1000)
+            if (response.ok) {
+                message.info('编辑成功')
+                setTimeout(() => {window.location.replace(document.referrer)}, 1000)
+            } else {
+                throw new Error('Failed to fetch data');
+            }
         } catch (err) {
             console.error('Error fetching data:', err);
+        }
+    }
+    // 导入上个处方
+    const inportRecipe = async() => {
+        const response = await fetch(`/api/recipe/getList?patient_id=${patientId}`, { method: "GET" });
+        if (response.ok) {
+            const result = await response.json();
+            let recipe = result.table[0] || {}
+            formRef?.current.setFieldValue('narrative', recipe.narrative)
+            formRef?.current.setFieldValue('diagnosis', recipe.diagnosis)
+            formRef?.current.setFieldValue('recipe_content', recipe.recipe_content)
+        } else {
+            throw new Error('Failed to fetch data');
         }
     }
 
@@ -120,8 +145,9 @@ export default function Deatil() {
                         disabled={true}
                         initialValue={detail.patient_name || ''}
                     />
-                    <Button onClick={() => setIsModalOpen(true)} disabled={!!id}>选择已有患者</Button>
-                    <Button href='/addPatient' disabled={!!id}>新增患者</Button>
+                    <Button onClick={() => setIsModalOpen(true)} disabled={!!id||!!patient}>选择已有患者</Button>
+                    <Button href='/addPatient' disabled={!!id||!!patient}>新增患者</Button>
+                    <Button onClick={inportRecipe} disabled={!patient}>导入上个处方</Button>
                 </ProForm.Group>
                 <ProFormText
                     width="md"

@@ -56,8 +56,6 @@ export default function Home() {
         },
     ];
 
-    const [params, setParams] = useState({ current: 1, pageSize: 20 });
-
     const fetchData = async (params) => {
         const { current, pageSize, name = "" } = params;
         //console.log(params)
@@ -78,13 +76,14 @@ export default function Home() {
     return (
         <ProTable
             request={fetchData}
-            params={params}
-            onParamsChange={setParams}
             columns={columns}
             search={{
                 labelWidth: 'auto',
             }}
-            rowKey={(record, index) => `${record.id}-${index}`}
+            pagination={{
+                pageSize: 10
+            }}
+            rowKey={(record) => record.id}
             toolBarRender={() => [
                 <Button
                     key="button"

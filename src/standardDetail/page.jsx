@@ -16,8 +16,12 @@ export default function Deatil() {
     const getDetail = async () => {
         let _id = geUrlParams(['id']).id
         const response = await fetch(`/api/standard/getStandard?id=${_id}`);
-        const data = await response.json();
-        setDetail(data[0] || {})
+        if (response.ok) {
+            const data = await response.json();
+            setDetail(data[0] || {})
+        } else {
+            throw new Error('Failed to fetch data');
+        }
     }
 
 
@@ -38,7 +42,6 @@ export default function Deatil() {
                 <p className='contBodyTitle'>1. 方剂描述</p>
                 <span className='contBodycont'>{detail.standard_describe}</span>
                 <p className='contBodyTitle'>2. 注解</p>
-                {/* <span>{detail.remark?detail.remark:'无'}</span> */}
                 <div dangerouslySetInnerHTML={{ __html: detail.remark ? unEscapeHtml(detail.remark) : '无' }} />
             </div>
         </div>

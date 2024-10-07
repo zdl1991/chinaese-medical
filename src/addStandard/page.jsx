@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { message, Input } from 'antd'
-import { geUrlParams, escapeHtml } from '../utils.jsx'
+import { geUrlParams, escapeHtml, unEscapeHtml } from '../utils.jsx'
 import MyEditor from '../../public/wangedit/wangedit'
 import styles from "../page.module.css";
 import "./add.scss"
@@ -26,8 +26,8 @@ export default function Deatil() {
     const getDetail = async (id) => {
         const response = await fetch(`/api/standard/getStandard?id=${id}`);
         const data = await response.json();
-        setDetail(data[0])
-        formRef?.current.setFieldsValue(data[0])
+        setDetail({...data[0], remark:unEscapeHtml(data[0].remark)})
+        formRef?.current.setFieldsValue({...data[0], remark:unEscapeHtml(data[0].remark)})
     }
 
     const addStandard = async (values) => {
@@ -36,7 +36,6 @@ export default function Deatil() {
             const result = await fetch('/api/standard/addStandard', {
                 method: "POST",
                 body: JSON.stringify({ ...values, remark: escapeHtml(values.remark) }),
-                // body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
             })
             if (result.status==501) {
@@ -45,14 +44,10 @@ export default function Deatil() {
                 message.info('新增失败')
             }else {
                 message.info('新增成功')
+                formRef?.current.resetFields()
                 setTimeout(() => {window.location.replace(document.referrer)}, 1000)
             }
-            //formRef?.current.resetFields()
-            // history.back(-1); 
-            // location.reload(); 
-            
         } catch (err) {
-
             console.error('Error fetching data:', err);
         }
     }
@@ -60,15 +55,19 @@ export default function Deatil() {
     const updateStandard = async (values) => {
         // console.log('values',values)
         try {
-            await fetch('/api/standard/updateStandard', {
+            const result = await fetch('/api/standard/updateStandard', {
                 method: "PUT",
                 body: JSON.stringify({ ...values, id }),
                 headers: { "Content-Type": "application/json" }
             })
-            message.info('编辑成功')
-            // history.back(-1); 
-            // location.reload();
-            setTimeout(() => { window.location.replace(document.referrer) }, 1000)
+            if (result.status==501) {
+                message.info('重复添加')
+            } else if(result.status==500){
+                message.info('新增失败')
+            }else {
+                message.info('编辑成功')
+                setTimeout(() => { window.location.replace(document.referrer) }, 1000)
+            }
         } catch (err) {
             console.error('Error fetching data:', err);
         }

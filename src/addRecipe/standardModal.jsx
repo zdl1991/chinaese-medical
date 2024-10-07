@@ -56,7 +56,7 @@ export default function StandardtModal({ open, setIsOpen, changeForm }) {
                     <Space direction="vertical">
                         {
                             standardList.map(item => (
-                                <Radio value={item} key={item.id}>{item.name} {item.standard_describe}</Radio>
+                                <Radio value={item} key={item.id}><span className='itemName'>{item.name}</span> {item.standard_describe}</Radio>
                             ))
                         }
                     </Space>

@@ -54,6 +54,7 @@ export default function Deatil() {
                     <div className='contItem'>备注：<span>{patient.remark}</span></div>
                 </div>
                 <Button href={`/addPatient?id=${id}`} >编辑</Button>
+                <Button href={`/addRecipe?patientId=${id}`}>快速开方</Button>
             </div>
             <div className={styles.line}></div>
             <h3>处方信息</h3>

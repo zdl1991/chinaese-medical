@@ -6,7 +6,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { unEscapeHtml } from '../utils.jsx'
 
 export default function Home() {
-  const [params, setParams] = useState({ current: 1, pageSize: 20 });
 
   const columns = [
     {
@@ -60,24 +59,29 @@ export default function Home() {
     !!params.name ? _url = `${_url}&name=${params.name}` : _url
 
     const response = await fetch(_url);
-    const data = await response.json();
-    return {
-      data: data.table,
-      total: data.total,
-      success: true,
-    };
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        data: data.table,
+        total: data.total,
+        success: true,
+      };
+    } else {
+      throw new Error('Failed to fetch data');
+    }
   };
 
   return (
     <ProTable
       request={fetchData}
-      params={params}
-      onParamsChange={setParams}
       columns={columns}
       search={{
         labelWidth: 'auto',
       }}
-      rowKey={(record, index) => `${record.id}-${index}`}
+      pagination={{
+        pageSize: 10
+      }}
+      rowKey={(record) => record.id}
       toolBarRender={() => [
         <Button
           key="button"

@@ -20,6 +20,9 @@ const escapeHtml = (v) => {
 }
 // 反转义
 const unEscapeHtml = (v) => {
+    // const buffer = new Uint8Array(v.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+    // const escapedStr = new TextDecoder('utf-8').decode(buffer);
+    // console.log(escapedStr);
     let escapedStr = v.replace(/&#x26;/g, `&`)
         .replace(/&#x3C;/g, `<`)
         .replace(/&#x3E;/g, `>`)
