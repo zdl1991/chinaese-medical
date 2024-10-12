@@ -1,11 +1,12 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 import { unEscapeHtml } from '../utils.jsx'
 
 export default function Home() {
+  // const [params, setParams] = useState({})
 
   const columns = [
     {
@@ -52,6 +53,11 @@ export default function Home() {
       </div>)
     },
   ];
+  // useEffect(()=>{
+  //   return () => {
+  //     sessionStorage.setItem('$$standardParams', {})
+  //   }
+  // },[])
 
   const fetchData = async (params) => {
     const { current, pageSize } = params;
@@ -71,15 +77,26 @@ export default function Home() {
     }
   };
 
+
+  const paginationChange = (current,pageSize)=>{
+    console.log('e,v',current,pageSize)
+    setParams({current:curren,pageSize:pageSize})
+    const _params = {current:current,pageSize:pageSize}
+    sessionStorage.setItem('$$standardParams', JSON.stringify(_params))
+  }
+
   return (
     <ProTable
       request={fetchData}
       columns={columns}
       search={{
         labelWidth: 'auto',
+        showSizeChanger: false,
       }}
       pagination={{
-        pageSize: 10
+        pageSize: 10,
+        showSizeChanger: false,
+        //onChange: paginationChange
       }}
       rowKey={(record) => record.id}
       toolBarRender={() => [

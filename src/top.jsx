@@ -27,6 +27,11 @@ export default function Top() {
             key: 'recipe',
             keyPath: '/recipe',
             includePath: ["/recipe", "/recipeDetail", "/addRecipe"]
+        }, {
+            label: '药品',
+            key: 'medical',
+            keyPath: '/medical',
+            includePath: ["/medical", "/addMedical"]
         }
     ]
 

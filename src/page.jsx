@@ -32,6 +32,13 @@ export default function Home() {
                 >
                     处方 -&gt;
                 </a>
+                <a
+                    href="/medical"
+                    className={styles.card}
+                    rel="noopener noreferrer"
+                >
+                    药品 -&gt;
+                </a>
             </div>
         </div>
     );

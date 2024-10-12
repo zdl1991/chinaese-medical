@@ -12,6 +12,8 @@ import AddPatient from './addPatient/page.jsx'
 import Recipe from './recipe/page.jsx'
 import RecipeDetail from './recipeDetail/page.jsx'
 import AddRecipe from './addRecipe/page.jsx'
+import Medical from './medical/page.jsx'
+import AddMedical from './addMedical/page.jsx'
 import Top from './top.jsx'
 import { Layout } from 'antd';
 import './index.css'
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
     { path: "/recipe", element: <Recipe /> },
     { path: "/recipeDetail", element: <RecipeDetail /> },
     { path: "/addRecipe", element: <AddRecipe /> },
+    { path: "/medical", element: <Medical /> },
+    { path: "/addMedical", element: <AddMedical /> },
 ]);
 
 const homeStyle = {
