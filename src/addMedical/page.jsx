@@ -17,7 +17,7 @@ export default function Deatil() {
 
     const getDetail = async (id) => {
 
-        const response = await fetch(`/api/patient/getPatient?id=${id}`, { method: "GET" });
+        const response = await fetch(`/api/medical/getMedical?id=${id}`, { method: "GET" });
         if (response.ok) {
             const result = await response.json();
             //console.log('data', data)
@@ -43,7 +43,7 @@ export default function Deatil() {
         //console.log(values)
         if (isUpdate) {
             try {
-                await fetch('/api/patient/updatePatient', {
+                await fetch('/api/medical/updateMedical', {
                     method: "POST",
                     body: JSON.stringify(values),
                     headers: { "Content-Type": "application/json" }
@@ -54,7 +54,7 @@ export default function Deatil() {
             }
         } else {
             try {
-                await fetch('/api/patient/addPatient', {
+                await fetch('/api/medical/addMedical', {
                     method: "POST",
                     body: JSON.stringify(values),
                     headers: { "Content-Type": "application/json" }
@@ -81,7 +81,7 @@ export default function Deatil() {
                         onFinish(values)
                     }
                     message.success('提交成功');
-                    setTimeout(() => { location.href = "/patient" }, 1000)
+                    setTimeout(() => { location.href = "/medical" }, 1000)
 
                 }}
                 initialValues={params}
@@ -89,38 +89,16 @@ export default function Deatil() {
                 <ProFormText
                     width="md"
                     name="name"
-                    label="姓名"
+                    label="药品名称"
                     placeholder="请输入名称"
                     initialValue={params.name || ''}
                 />
                 <ProFormDigit
                     width="md"
-                    label="年龄"
-                    name="age"
-                    min={1}
-                    max={1000}
-                    fieldProps={{ precision: 0 }}
-                    initialValue={params.age || ''}
-                />
-                <ProFormRadio.Group
-                    label="性别"
-                    name="sex"
-                    initialValue={1}
-                    options={[{ label: '男', value: 1 }, { label: '女', value: 0 }]}
-                />
-                <ProFormText
-                    width="md"
-                    name="phone"
-                    label="联系方式"
-                    placeholder="请输入联系方式"
-                    initialValue={params.phone || ''}
-                />
-                <ProFormText
-                    width="md"
-                    name="address"
-                    label="联系地址"
-                    placeholder="请输入联系地址"
-                    initialValue={params.address || ''}
+                    label="药品单价"
+                    name="price"
+                    fieldProps={{ precision: 4 }}
+                    initialValue={params.price || ''}
                 />
                 <ProForm.Item name={'remark'} label="描述" initialValue={params.remark || ''}>
                     <TextArea rows={4} name="remark" placeholder="请输入描述" />

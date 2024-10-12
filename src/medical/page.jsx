@@ -13,11 +13,6 @@ export default function Home() {
             ellipsis: true,
         },
         {
-            title: '药品id',
-            dataIndex: 'id',
-            hideInSearch: true,
-        },
-        {
             title: '药品单价',
             dataIndex: 'price',
             hideInSearch: true,
@@ -47,7 +42,7 @@ export default function Home() {
     const fetchData = async (params) => {
         const { current, pageSize, name = "" } = params;
         //console.log(params)
-        const response = await fetch(`/api/patient/getList?name=${name}&current=${current}&pageSize=${pageSize}`, { method: "GET" });
+        const response = await fetch(`/api/medical/getList?name=${name}&current=${current}&pageSize=${pageSize}`, { method: "GET" });
         if (response.ok) {
             const data = await response.json();
             //console.log('data', data)
@@ -76,7 +71,7 @@ export default function Home() {
                 <Button
                     key="button"
                     icon={<PlusOutlined />}
-                    href='/addPatient'
+                    href='/addMedical'
                     type="primary"
                 >
                     新建
