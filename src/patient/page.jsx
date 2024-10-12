@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
-import styles from '../page.module.css';
-import { Button, Breadcrumb, Layout, Menu } from 'antd';
+import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -13,75 +12,60 @@ export default function Home() {
             dataIndex: 'name',
             ellipsis: true,
         },
-
-        {
-            title: '就诊号',
-            dataIndex: 'depict',
-            hideInSearch: true,
-            minWidth: '200px'
-        },
         {
             title: '性别',
-            dataIndex: 'chapter',
+            dataIndex: 'sex',
             hideInSearch: true,
+            render: (text) => {
+                return ["女", "男"][text]
+            }
+
         },
         {
             title: '年龄',
-            dataIndex: 'remark',
+            dataIndex: 'age',
             hideInSearch: true,
         },
         {
             title: '联系方式',
-            dataIndex: 'remark',
+            dataIndex: 'phone',
             hideInSearch: true,
         },
         {
             title: '创建时间',
-            dataIndex: 'createTime',
-            key: 'showTime',
-            valueType: 'date',
+            dataIndex: 'create_time',
+            valueType: 'dateTime',
             sorter: true,
             hideInSearch: true,
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            valueType: 'dateRange',
-            hideInTable: true,
-            search: {
-                transform: (value) => {
-                    return {
-                        startTime: value[0],
-                        endTime: value[1],
-                    };
-                },
-            },
+        }, {
+            title: '描述',
+            dataIndex: 'remark',
+            hideInSearch: true,
         },
         {
             title: '操作',
             dataIndex: 'age',
             hideInSearch: true,
-            render: () => (<div>
-                <Button type='link' href='/patientDetail'>详情</Button>
-                <Button type='link' href='/addPatient'>编辑</Button>
-                <Button type='link'>快速开方</Button>
-            </div>)
+            render: (parms, parm) => {
+                return (<div>
+                    <Button type='link' href={`/patientDetail?id=${parm.id}`}>详情</Button>
+                    <Button type='link' href={`/addPatient?id=${parm.id}`}>编辑</Button>
+                    <Button type='link' href={`/addRecipe?patientId=${parm.id}`}>快速开方</Button>
+                </div>)
+            }
         },
     ];
 
-    const { Header, Content } = Layout;
-
-    const [params, setParams] = useState({ current: 1, pageSize: 20 });
-
     const fetchData = async (params) => {
-        const { current, pageSize } = params;
-        const response = await fetch(`/api/patient?current=${current}&pageSize=${pageSize}`, { method: "GET" });
+        const { current, pageSize, name = "" } = params;
+        //console.log(params)
+        const response = await fetch(`/api/patient/getList?name=${name}&current=${current}&pageSize=${pageSize}`, { method: "GET" });
         if (response.ok) {
             const data = await response.json();
-            console.log('data', data)
+            //console.log('data', data)
             return {
-                data: data,
-                total: data.length,
+                data: data.table,
+                total: data.total,
                 success: true,
             };
         } else {
@@ -89,44 +73,27 @@ export default function Home() {
         }
     };
 
-    return (<main className={styles.main}>
-        <Layout>
-            <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <div className="demo-logo" />
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['2']}
-                    items={[]}
-                    style={{ flex: 1, minWidth: 0 }}
-                />
-            </Header>
-            <Content style={{ padding: '0 48px' }}>
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item href="/">首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>患者列表</Breadcrumb.Item>
-                </Breadcrumb>
-                <ProTable
-                    request={fetchData}
-                    params={params}
-                    //onParamsChange={setParams}
-                    columns={columns}
-                    search={{
-                        labelWidth: 'auto',
-                    }}
-                    toolBarRender={() => [
-                        <Button
-                            key="button"
-                            icon={<PlusOutlined />}
-                            href='/addPatient'
-                            type="primary"
-                        >
-                            新建
-                        </Button>
-                    ]}
-                />
-            </Content>
-        </Layout>
-    </main>
+    return (
+        <ProTable
+            request={fetchData}
+            columns={columns}
+            search={{
+                labelWidth: 'auto',
+            }}
+            pagination={{
+                pageSize: 10
+            }}
+            rowKey={(record) => record.id}
+            toolBarRender={() => [
+                <Button
+                    key="button"
+                    icon={<PlusOutlined />}
+                    href='/addPatient'
+                    type="primary"
+                >
+                    新建
+                </Button>
+            ]}
+        />
     );
 }

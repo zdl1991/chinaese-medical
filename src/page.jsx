@@ -6,33 +6,33 @@ import img from '/dyjc.png';
 export default function Home() {
 
     return (
-        <main className={styles.main}>
+        <div>
             <div className={styles.center}>
                 <img src={img} alt="Logo" />
             </div>
             <div className={styles.grid}>
-                <Link
-                    to="/standardRecipe"
+                <a
+                    href="/standard"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     标准方剂-&gt;
-                </Link>
-                <Link
-                    to="/patient"
+                </a>
+                <a
+                    href="/patient"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     患者 -&gt;
-                </Link>
-                <Link
-                    to="/recipe"
+                </a>
+                <a
+                    href="/recipe"
                     className={styles.card}
                     rel="noopener noreferrer"
                 >
                     处方 -&gt;
-                </Link>
+                </a>
             </div>
-        </main>
+        </div>
     );
 }

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from 'react';
-import styles from '../page.module.css';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
@@ -23,74 +22,74 @@ export default function Home() {
             hideInSearch: true,
         },
         {
-            title: '开方时间',
-            dataIndex: 'create_time',
-            valueType: 'dateRange',
-            hideInTable: true,
-            search: {
-                transform: (value) => {
-                    return {
-                        startTime: value[0],
-                        endTime: value[1],
-                    };
-                },
-            },
-        },
-        {
             title: '主诉',
             dataIndex: 'narrative',
             hideInSearch: true,
-            minWidth: '200px'
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '诊断',
             dataIndex: 'diagnosis',
             hideInSearch: true,
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '处方',
-            dataIndex: 'recipe',
+            dataIndex: 'recipe_content',
             hideInSearch: true,
+            minWidth: '200px',
+            ellipsis: true,
+            tooltip: '内容过长会自动收缩',
         },
         {
             title: '贴数（贴）',
             dataIndex: 'num',
             hideInSearch: true,
+            with: '20px'
         },
 
         {
             title: '操作',
             hideInSearch: true,
-            render: () => (<div>
-                <Button type='link' href='/recipeDetail'>详情</Button>
-                <Button type='link' href='/addRecipe'>编辑</Button>
-                <Button type='link'>删除</Button>
+            render: (e, item) => (<div>
+                <Button type='link' href={`/recipeDetail?id=${item.id}`}>详情</Button>
+                <Button type='link' href={`/addRecipe?id=${item.id}`}>编辑</Button>
             </div>)
         },
     ];
-    const [params, setParams] = useState({ current: 1, pageSize: 20 });
-
 
     const fetchData = async (params) => {
         const { current, pageSize, sorter } = params;
-        const response = await fetch(`/api/recipes?current=${current}&pageSize=${pageSize}&sorter=${sorter}`);
-        const data = await response.json();
-        return {
-            data: data,
-            total: data.length,
-            success: true,
-        };
+        console.log('current, pageSize,', current, pageSize,)
+        let _url = `/api/recipe/getList?current=${current}&pageSize=${pageSize}&orderBy=${sorter || ''}`
+        !!params.name ? _url = `${_url}&name=${params.name}` : _url
+        const response = await fetch(_url);
+        if (response.ok) {
+            const data = await response.json();
+            return {
+                data: data.table,
+                total: data.total,
+                success: true,
+            };
+        } else {
+            throw new Error('Failed to fetch data');
+        }
     };
-    return (<main className={styles.main}>
-
+    return (
         <ProTable
             request={fetchData}
-            params={params}
-            //onParamsChange={setParams}
             columns={columns}
             search={{
                 labelWidth: 'auto',
             }}
+            pagination={{
+                pageSize: 10
+            }}
+            rowKey={(record) => record.id}
             toolBarRender={() => [
                 <Button
                     key="button"
@@ -103,6 +102,5 @@ export default function Home() {
             ]}
         />
 
-    </main>
     );
 }
