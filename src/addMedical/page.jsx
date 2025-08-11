@@ -67,7 +67,7 @@ export default function Deatil() {
     }
 
     return (<div className={styles.body}>
-        <div className={styles.title}>{isUpdate ? "编辑患者" : "新增患者"}</div>
+        <div className={styles.title}>编辑药品</div>
         <div className={styles.line}></div>
         <div className='formWrap'>
             <ProForm
@@ -99,6 +99,13 @@ export default function Deatil() {
                     name="price"
                     fieldProps={{ precision: 4 }}
                     initialValue={params.price || ''}
+                />
+                <ProFormText
+                    width="md"
+                    label="药品库存"
+                    name="quantity"
+                    fieldProps={{ precision: 4 }}
+                    initialValue={params.quantity || ''}
                 />
                 <ProForm.Item name={'remark'} label="描述" initialValue={params.remark || ''}>
                     <TextArea rows={4} name="remark" placeholder="请输入描述" />

@@ -145,9 +145,13 @@ export default function Deatil() {
                         disabled={true}
                         initialValue={detail.patient_name || ''}
                     />
-                    <Button onClick={() => setIsModalOpen(true)} disabled={!!id||!!patient}>选择已有患者</Button>
-                    <Button href='/addPatient' disabled={!!id||!!patient}>新增患者</Button>
-                    <Button onClick={inportRecipe} disabled={!patient}>导入上个处方</Button>
+                    {
+                        !id && <>
+                            <Button onClick={() => setIsModalOpen(true)} disabled={!!patient.patient_id}>选择已有患者</Button>
+                            <Button href='/addPatient' disabled={!!patient.patient_id}>新增患者</Button>
+                            <Button onClick={inportRecipe} disabled={!patient.patient_id}>导入上个处方</Button>
+                        </>
+                    }
                 </ProForm.Group>
                 <ProFormText
                     width="md"
