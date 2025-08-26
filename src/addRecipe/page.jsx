@@ -136,12 +136,14 @@ export default function Deatil() {
                 form={form}
                 formRef={formRef}
                 onFinish={(values) => id ? updateRecipe(values) : addRecipe(values)}
+                layout={'horizontal'}
             >
-                <ProForm.Group title={'姓名'}>
+                <ProForm.Group>
                     <ProFormText
                         width="md"
                         name="patient_name"
                         placeholder="请输入名称"
+                        label={'姓名'}
                         disabled={true}
                         initialValue={detail.patient_name || ''}
                     />
@@ -153,30 +155,34 @@ export default function Deatil() {
                         </>
                     }
                 </ProForm.Group>
-                <ProFormText
-                    width="md"
-                    name="patient_age"
-                    label="年龄"
-                    disabled={true}
-                    placeholder="请输入年龄"
-                    initialValue={detail.patient_age || ''}
-                />
-                <ProFormRadio.Group
-                    label="性别"
-                    name="patient_sex"
-                    disabled={true}
-                    initialValue={1}
-                    options={[{ label: '男', value: 1 }, { label: '女', value: 0 }]}
-                />
-                <ProForm.Item name={'narrative'} label="主诉" initialValue={detail.narrative || ''}>
-                    <TextArea rows={4} name="narrative" placeholder="请输入主诉" />
-                </ProForm.Item>
-                <ProForm.Item name={'diagnosis'} label="诊断" initialValue={detail.diagnosis || ''}>
-                    <TextArea rows={4} name="diagnosis" placeholder="请输入诊断" />
-                </ProForm.Item>
+                <ProForm.Group>
+                    <ProFormText
+                        width="md"
+                        name="patient_age"
+                        label="年龄"
+                        disabled={true}
+                        placeholder="请输入年龄"
+                        initialValue={detail.patient_age || ''}
+                    />
+                    <ProFormRadio.Group
+                        label="性别"
+                        name="patient_sex"
+                        disabled={true}
+                        initialValue={1}
+                        options={[{ label: '男', value: 1 }, { label: '女', value: 0 }]}
+                    />
+                </ProForm.Group>
+                <ProForm.Group>
+                    <ProForm.Item name={'narrative'} label="主诉" initialValue={detail.narrative || ''} >
+                        <TextArea rows={4} name="narrative" placeholder="请输入主诉" style={{width:'500px'}}/>
+                    </ProForm.Item>
+                    <ProForm.Item name={'diagnosis'} label="诊断" initialValue={detail.diagnosis || ''}>
+                        <TextArea rows={4} name="diagnosis" placeholder="请输入诊断" style={{width:'500px'}}/>
+                    </ProForm.Item>
+                </ProForm.Group>
                 <div style={{ display: 'flex' }}>
                     <ProForm.Item name={'recipe_content'} label="处方" initialValue={detail.recipe_content || ''} style={{ flex: 1 }}>
-                        <TextArea rows={4} name="recipe_content" placeholder="请输入处方" />
+                        <TextArea rows={4} name="recipe_content" placeholder="请输入处方" style={{minHeight:'400px'}} />
                     </ProForm.Item>
                     {!id && <Button className="recipeBtn" onClick={() => setIsStandardOpen(true)}>添加标准处方</Button>}
                 </div>
