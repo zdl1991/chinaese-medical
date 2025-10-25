@@ -154,8 +154,6 @@ export default function Deatil() {
                             <Button onClick={inportRecipe} disabled={!patient.patient_id}>导入上个处方</Button>
                         </>
                     }
-                </ProForm.Group>
-                <ProForm.Group>
                     <ProFormText
                         width="md"
                         name="patient_age"
@@ -174,10 +172,10 @@ export default function Deatil() {
                 </ProForm.Group>
                 <ProForm.Group>
                     <ProForm.Item name={'narrative'} label="主诉" initialValue={detail.narrative || ''} >
-                        <TextArea rows={4} name="narrative" placeholder="请输入主诉" style={{width:'500px'}}/>
+                        <TextArea rows={4} name="narrative" placeholder="请输入主诉" style={{height:'200px',width:'500px'}}/>
                     </ProForm.Item>
                     <ProForm.Item name={'diagnosis'} label="诊断" initialValue={detail.diagnosis || ''}>
-                        <TextArea rows={4} name="diagnosis" placeholder="请输入诊断" style={{width:'500px'}}/>
+                        <TextArea rows={4} name="diagnosis" placeholder="请输入诊断" style={{height:'200px',width:'500px'}}/>
                     </ProForm.Item>
                 </ProForm.Group>
                 <div style={{ display: 'flex' }}>

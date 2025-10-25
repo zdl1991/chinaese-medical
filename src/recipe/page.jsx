@@ -63,10 +63,10 @@ export default function Home() {
     ];
 
     const fetchData = async (params) => {
-        const { current, pageSize, sorter } = params;
-        console.log('current, pageSize,', current, pageSize,)
+        const { current, pageSize, sorter, patient_name } = params;
+        console.log('params', params)
         let _url = `/api/recipe/getList?current=${current}&pageSize=${pageSize}&orderBy=${sorter || ''}`
-        !!params.name ? _url = `${_url}&name=${params.name}` : _url
+        !!patient_name ? _url = `${_url}&patient_name=${patient_name}` : _url
         const response = await fetch(_url);
         if (response.ok) {
             const data = await response.json();
