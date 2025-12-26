@@ -15,7 +15,7 @@
 }
 .formWrap{
     background-color: #ffffff;
-    margin: 20px;
+    margin: 20px 48px;
     padding: 10px;
     border-radius: 10px;
     .recipeBtn{
@@ -28,4 +28,8 @@
     min-height: 100px;
     max-height: 300px;
     overflow: scroll;
+    .itemName{
+        font-weight: 600;
+        margin-right: 20px;
+    }
 }

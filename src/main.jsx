@@ -3,34 +3,55 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 
 import Page from './page.jsx'
-import StandardRecipe from './standardRecipe/page.jsx'
-import StandardRecipeDetail from './standardRecipeDetail/page.jsx'
-import AddStandardRecipe from './addStandardRecipe/page.jsx'
+import Standard from './standard/page.jsx'
+import StandardDetail from './standardDetail/page.jsx'
+import AddStandard from './addStandard/page.jsx'
 import Patient from './patient/page.jsx'
 import PatientDetail from './patientDetail/page.jsx'
 import AddPatient from './addPatient/page.jsx'
 import Recipe from './recipe/page.jsx'
 import RecipeDetail from './recipeDetail/page.jsx'
 import AddRecipe from './addRecipe/page.jsx'
-
+import Medical from './medical/page.jsx'
+import AddMedical from './addMedical/page.jsx'
+import Top from './top.jsx'
+import { Layout } from 'antd';
 import './index.css'
 import './globals.css'
+import styles from "./page.module.css";
+
+const { Content } = Layout;
 
 const router = createBrowserRouter([
-    { path: "/", element: <Page /> },
-    { path: "/standardRecipe", element: <StandardRecipe /> },
-    { path: "/standardRecipeDetail", element: <StandardRecipeDetail /> },
-    { path: "/addStandardRecipe", element: <AddStandardRecipe /> },
+    { path: "/home", element: <Page /> },
+    { path: "/standard", element: <Standard /> },
+    { path: "/standardDetail", element: <StandardDetail /> },
+    { path: "/addStandard", element: <AddStandard /> },
     { path: "/patient", element: <Patient /> },
     { path: "/patientDetail", element: <PatientDetail /> },
     { path: "/addPatient", element: <AddPatient /> },
     { path: "/recipe", element: <Recipe /> },
     { path: "/recipeDetail", element: <RecipeDetail /> },
     { path: "/addRecipe", element: <AddRecipe /> },
+    { path: "/medical", element: <Medical /> },
+    { path: "/addMedical", element: <AddMedical /> },
 ]);
+
+const homeStyle = {
+    background: window.location.pathname == '/home' ? '#fff' : 'transparent',
+    paddingBottom: window.location.pathname == '/home' ? '0' : '30px'
+}
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <main className={styles.main}>
+            <Layout>
+                <Top/>
+
+                <Content style={homeStyle}>
+                    <RouterProvider router={router} />
+                </Content>
+            </Layout>
+        </main>
     </StrictMode>
 )
